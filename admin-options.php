@@ -23,8 +23,11 @@
                                     <td>
                                             <input type="checkbox" name="software_hub_overview_enabled_<?php echo $software['id'] ?>" <?php if ( get_option('software_hub_overview_enabled_'.$software['id'], false) ) : ?>checked<?php endif; ?> />
                                     </td>
+                            </tr>
+                            <tr valign="top">
+                                    <th scope="row"><?php _e('Overview', 'software_hub');?></th>
                                     <td>
-                                            <small><?php _e("Display the overview tab", 'software_hub');?></small>
+                                            <?php the_editor(get_option('software_hub_overview_text_'.$software['id'], ""), 'software_hub_overview_text_'.$software['id']); ?>
                                     </td>
                             </tr>
                     </table>

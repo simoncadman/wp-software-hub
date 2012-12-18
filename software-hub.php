@@ -40,6 +40,7 @@ function software_hub_settings () {
     register_setting( 'software_hub_settings', 'software_hub_instances');
     foreach ( software_hub_get_software_instances() as $software ) {
         register_setting( 'software_hub_settings', 'software_hub_overview_enabled_'.$software['id']);
+        register_setting( 'software_hub_settings', 'software_hub_overview_text_'.$software['id']);
     }
 }
 
