@@ -29,12 +29,18 @@ Author URI: http://www.niftiestsoftware.com/
 */
 
 function software_hub_get_software_instances ( ) {
-    $instances = get_option('software_hub_instances', "");
-    return explode("\n", $instances);
+    $instances = array();
+    foreach ( explode("\n", get_option('software_hub_instances', "")) as $software ) {
+        $instances[] = array( 'id' => trim(str_replace(' ', '_', $software)), 'name' => trim($software) );
+    }
+    return $instances;
 }
 
 function software_hub_settings () {
     register_setting( 'software_hub_settings', 'software_hub_instances');
+    foreach ( software_hub_get_software_instances() as $software ) {
+        register_setting( 'software_hub_settings', 'software_hub_overview_enabled_'.$software['id']);
+    }
 }
 
 function software_hub_add_pages() {

@@ -15,16 +15,16 @@
 			</tr>
 		</table>
                 <?php foreach ( software_hub_get_software_instances() as $software ) : ?>
-                    <h3><?php echo $software; ?></h3>
+                    <h3><?php echo $software['name']; ?></h3>
                     <h4>Overview</h4>
                     <table class="form-table">
                             <tr valign="top">
                                     <th scope="row"><?php _e('Show Overview', 'software_hub');?></th>
                                     <td>
-                                            <textarea name="software_hub_instances"><?php echo get_option('software_hub_instances', ""); ?></textarea>
+                                            <input type="checkbox" name="software_hub_overview_enabled_<?php echo $software['id'] ?>" <?php if ( get_option('software_hub_overview_enabled_'.$software['id'], false) ) : ?>checked<?php endif; ?> />
                                     </td>
                                     <td>
-                                            <small><?php _e("List of software instances", 'software_hub');?></small>
+                                            <small><?php _e("Display the overview tab", 'software_hub');?></small>
                                     </td>
                             </tr>
                     </table>
