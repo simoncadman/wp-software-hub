@@ -58,35 +58,35 @@ function software_hub_options () {
             } else {
                 $newfields['overview_enabled'] = 0;
             }
-            $newfields['overview'] = $_POST['software_hub_overview_text'];
+            $newfields['overview'] = stripslashes($_POST['software_hub_overview_text']);
         } else if ( $_POST['software_hub_backend_page_type'] == 'changelog' ) {
             if ( isset( $_POST['software_hub_changelog_enabled'] ) ) {
                 $newfields['changelog_enabled'] = $_POST['software_hub_changelog_enabled'] === 'on';
             } else {
                 $newfields['changelog_enabled'] = 0;
             }
-            $newfields['changelog'] = $_POST['software_hub_changelog_text'];
+            $newfields['changelog'] = stripslashes($_POST['software_hub_changelog_text']);
         } else if ( $_POST['software_hub_backend_page_type'] == 'installation' ) {
             if ( isset( $_POST['software_hub_installation_enabled'] ) ) {
                 $newfields['installation_enabled'] = $_POST['software_hub_installation_enabled'] === 'on';
             } else {
                 $newfields['installation_enabled'] = 0;
             }
-            $newfields['installation'] = $_POST['software_hub_installation_text'];
+            $newfields['installation'] = stripslashes($_POST['software_hub_installation_text']);
         } else if ( $_POST['software_hub_backend_page_type'] == 'configuration' ) {
             if ( isset( $_POST['software_hub_configuration_enabled'] ) ) {
                 $newfields['configuration_enabled'] = $_POST['software_hub_configuration_enabled'] === 'on';
             } else {
                 $newfields['configuration_enabled'] = 0;
             }
-            $newfields['configuration'] = $_POST['software_hub_configuration_text'];
+            $newfields['configuration'] = stripslashes($_POST['software_hub_configuration_text']);
         } else if ( $_POST['software_hub_backend_page_type'] == 'issues' ) {
             if ( isset( $_POST['software_hub_issues_enabled'] ) ) {
                 $newfields['issues_enabled'] = $_POST['software_hub_issues_enabled'] === 'on';
             } else {
                 $newfields['issues_enabled'] = 0;
             }
-            $newfields['issues'] = $_POST['software_hub_issues_text'];
+            $newfields['issues'] = stripslashes($_POST['software_hub_issues_text']);
         }
         
         $wpdb->update( $wpdb->prefix . "software_hub_software", $newfields, array( 'id' => $_POST['software_id'] ) );
