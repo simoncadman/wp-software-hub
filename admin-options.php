@@ -27,13 +27,13 @@
                     <?php if ( $_GET['tab'] == 'software-hub-' . $software['id'] ) : ?>
                     <h4>Shortcode: [software_hub_view id="<?php echo $software['id']; ?>"]</h4>
                     
-                    <h5 class="nav-tab-wrapper">
+                    <h3 class="nav-tab-wrapper">
                         <a href="?page=software_hub_menu&tab=software-hub-<?= $software['id'] ?>&tab2=overview" class="nav-tab <?php if ( $_GET['tab2'] == '' || $_GET['tab2'] == 'overview' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Overview', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=software-hub-<?= $software['id'] ?>&tab2=changelog" class="nav-tab <?php if ( $_GET['tab2'] == 'changelog' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changelog', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=software-hub-<?= $software['id'] ?>&tab2=installation" class="nav-tab <?php if ( $_GET['tab2'] == 'installation' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Installation', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=software-hub-<?= $software['id'] ?>&tab2=configuration" class="nav-tab <?php if ( $_GET['tab2'] == 'configuration' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Configuration', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=software-hub-<?= $software['id'] ?>&tab2=issues" class="nav-tab <?php if ( $_GET['tab2'] == 'issues' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Issues', 'software_hub_control');?></a>
-                    </h5>
+                    </h3>
                     
                     <?php if ( $_GET['tab2'] == '' || $_GET['tab2'] == 'overview' ) : ?>
                     <?php settings_fields('software_hub_settings-overview-' . $software['id']); ?>
