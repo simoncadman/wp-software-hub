@@ -1,20 +1,32 @@
 <div class="wrap">
-	<h2><?php _e('Software Hub Options', 'software_hub_control');?></h2>
+
+<h2 class="nav-tab-wrapper">
+    <a href="?page=software_hub_menu&tab=software-hub-options" class="nav-tab <?php if ( $_GET['tab'] == '' || $_GET['tab'] == 'software-hub-options' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Software Hub Options', 'software_hub_control');?></a>
+    <?php foreach ( software_hub_get_software_instances() as $software ) : ?>
+    <a href="?page=software_hub_menu&tab=software-hub-<?php echo $software['id']; ?>" class="nav-tab <?php if ( $_GET['tab'] == 'software-hub-' . $software['id'] ) : ?> nav-tab-active <?php endif; ?>"><?php echo $software['name']; ?></a>
+    <?php endforeach; ?>
+</h2>
 	<form method="post" action="options.php">
-		<?php settings_fields('software_hub_settings'); ?>
-		<h3><?php _e('Software', 'software_hub');?></h3>
-		<table class="form-table">
-			<tr valign="top">
-				<th scope="row"><?php _e('Software', 'software_hub');?></th>
-                                <td>
-                                        <textarea name="software_hub_instances"><?php echo get_option('software_hub_instances', ""); ?></textarea>
-				</td>
-				<td>
-					<small><?php _e("List of software instances", 'software_hub');?></small>
-				</td>
-			</tr>
-		</table>
+        <?php if ( $_GET['tab'] == '' || $_GET['tab'] == 'software-hub-options' ) : ?>
+	<h2><?php _e('Software Hub Options', 'software_hub_control');?></h2>
+        <?php settings_fields('software_hub_settings'); ?>
+        <h3><?php _e('Software', 'software_hub');?></h3>
+        <table class="form-table">
+                <tr valign="top">
+                        <th scope="row"><?php _e('Software', 'software_hub');?></th>
+                        <td>
+                                <textarea name="software_hub_instances"><?php echo get_option('software_hub_instances', ""); ?></textarea>
+                        </td>
+                        <td>
+                                <small><?php _e("List of software instances", 'software_hub');?></small>
+                        </td>
+                </tr>
+        </table>
+        <?php endif; ?>
+        
                 <?php foreach ( software_hub_get_software_instances() as $software ) : ?>
+                    <?php if ( $_GET['tab'] == 'software-hub-' . $software['id'] ) : ?>
+                    <?php settings_fields('software_hub_settings-' . $software['id']); ?>
                     <h3><?php echo $software['name']; ?></h3>
                     <h4>Shortcode: [software_hub_view id="<?php echo $software['id']; ?>"]</h4>
                     <h5>Overview</h5>
@@ -96,6 +108,8 @@
                                     </td>
                             </tr>
                     </table>
+                    <?php break; ?>
+                    <?php endif; ?>
                 <?php endforeach; ?>
                 
 		<p class="submit">

@@ -40,24 +40,24 @@ function software_hub_settings () {
     register_setting( 'software_hub_settings', 'software_hub_instances');
     foreach ( software_hub_get_software_instances() as $software ) {
         // overview
-        register_setting( 'software_hub_settings', 'software_hub_overview_enabled_'.$software['id']);
-        register_setting( 'software_hub_settings', 'software_hub_overview_text_'.$software['id']);
+        register_setting( 'software_hub_settings-'.$software['id'], 'software_hub_overview_enabled_'.$software['id']);
+        register_setting( 'software_hub_settings-'.$software['id'], 'software_hub_overview_text_'.$software['id']);
         
         // changelog
-        register_setting( 'software_hub_settings', 'software_hub_changelog_enabled_'.$software['id']);
-        register_setting( 'software_hub_settings', 'software_hub_changelog_text_'.$software['id']);
+        register_setting( 'software_hub_settings-'.$software['id'], 'software_hub_changelog_enabled_'.$software['id']);
+        register_setting( 'software_hub_settings-'.$software['id'], 'software_hub_changelog_text_'.$software['id']);
         
         // installation
-        register_setting( 'software_hub_settings', 'software_hub_installation_enabled_'.$software['id']);
-        register_setting( 'software_hub_settings', 'software_hub_installation_text_'.$software['id']);
+        register_setting( 'software_hub_settings-'.$software['id'], 'software_hub_installation_enabled_'.$software['id']);
+        register_setting( 'software_hub_settings-'.$software['id'], 'software_hub_installation_text_'.$software['id']);
         
         // configuration
-        register_setting( 'software_hub_settings', 'software_hub_configuration_enabled_'.$software['id']);
-        register_setting( 'software_hub_settings', 'software_hub_configuration_text_'.$software['id']);
+        register_setting( 'software_hub_settings-'.$software['id'], 'software_hub_configuration_enabled_'.$software['id']);
+        register_setting( 'software_hub_settings-'.$software['id'], 'software_hub_configuration_text_'.$software['id']);
         
         // issues
-        register_setting( 'software_hub_settings', 'software_hub_issues_enabled_'.$software['id']);
-        register_setting( 'software_hub_settings', 'software_hub_issues_text_'.$software['id']);
+        register_setting( 'software_hub_settings-'.$software['id'], 'software_hub_issues_enabled_'.$software['id']);
+        register_setting( 'software_hub_settings-'.$software['id'], 'software_hub_issues_text_'.$software['id']);
     }
 }
 
