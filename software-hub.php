@@ -69,5 +69,25 @@ function software_hub_options () {
     require_once(dirname(__FILE__) . '/admin-options.php');
 }
 
+function software_hub_view ( $params ) {
+    if ( isset($params) && is_array($params) && isset( $params['id'] ) ) {
+        $software = null;
+        foreach ( software_hub_get_software_instances() as $softwareItem ) {
+            if ( $softwareItem['id'] == $params['id'] ) {
+                $software = $softwareItem;
+                break;
+            }
+        }
+        
+        if ( !is_null($software) ) {
+            require_once(dirname(__FILE__) . '/frontend-view-software-hub.php');
+        }
+    }
+}
+
 add_action('admin_menu', 'software_hub_settings');
 add_action('admin_menu', 'software_hub_add_pages');
+
+foreach ( software_hub_get_software_instances() as $software ) {
+    add_shortcode('software_hub_view', 'software_hub_view');
+}

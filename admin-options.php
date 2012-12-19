@@ -16,7 +16,8 @@
 		</table>
                 <?php foreach ( software_hub_get_software_instances() as $software ) : ?>
                     <h3><?php echo $software['name']; ?></h3>
-                    <h4>Overview</h4>
+                    <h4>Shortcode: [software_hub_view id="<?php echo $software['id']; ?>"]</h4>
+                    <h5>Overview</h5>
                     <table class="form-table">
                             <tr valign="top">
                                     <th scope="row"><?php _e('Show Overview', 'software_hub');?></th>
