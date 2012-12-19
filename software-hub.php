@@ -80,6 +80,8 @@ function software_hub_view ( $params ) {
         }
         
         if ( !is_null($software) ) {
+            wp_enqueue_script('software_hub', '/wp-content/plugins/software-hub/js/software-hub.js');
+            wp_enqueue_style('software_hub', '/wp-content/plugins/software-hub/css/software-hub.css');
             require_once(dirname(__FILE__) . '/frontend-view-software-hub.php');
         }
     }
