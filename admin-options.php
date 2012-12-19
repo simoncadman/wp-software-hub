@@ -2,18 +2,18 @@
 
 <h2 class="nav-tab-wrapper">
     <a href="?page=software_hub_menu&tab=software-hub-options" class="nav-tab <?php if ( !isset($_GET['tab']) || $_GET['tab'] == '' || isset($_GET['tab']) && $_GET['tab'] == 'software-hub-options' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Software Hub Options', 'software_hub_control');?></a>
-    <?php foreach ( software_hub_get_software_instances() as $softwareItem ) : ?>
+    <?php foreach ( $softwareInstances as $softwareItem ) : ?>
     <a href="?page=software_hub_menu&tab=<?php echo $softwareItem->id; ?>" class="nav-tab <?php if ( isset($_GET['tab']) && $_GET['tab'] == $softwareItem->id ) : ?> nav-tab-active <?php endif; ?>"><?php echo $softwareItem->name; ?></a>
     <?php endforeach; ?>
 </h2>
         <?php if ( !isset($_GET['tab']) || $_GET['tab'] == '' || isset($_GET['tab']) && $_GET['tab'] == 'software-hub-options' ) : ?>
-        
+        <?php if ( count($softwareInstances) > 0 ): ?>
         <table class="form-table">
                 <tr valign="top">
                         <th scope="row"><?php _e('Software', 'software_hub');?></th>
                         <td>
                             <ul>
-                                <?php foreach ( software_hub_get_software_instances() as $instance ) : ?>
+                                <?php foreach ( $softwareInstances as $instance ) : ?>
                                 <li>
                                     <form method="post" action="">
                                     <input type="hidden" name="software_hub_backend_page_type" value="delete_software" />
@@ -26,6 +26,7 @@
                         </td>
                 </tr>
         </table>
+        <?php endif; ?>
         <table class="form-table">
          <form method="post" action="">
                 <tr valign="top">

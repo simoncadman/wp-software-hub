@@ -97,6 +97,7 @@ function software_hub_options () {
         );
     }
     
+    $softwareInstances = software_hub_get_software_instances();
     require_once(dirname(__FILE__) . '/admin-options.php');
 }
 
