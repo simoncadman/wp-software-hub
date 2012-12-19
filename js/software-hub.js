@@ -1,0 +1,1 @@
+jQuery('.software-hub-view').tabs()
