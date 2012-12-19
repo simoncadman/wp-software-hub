@@ -1,10 +1,24 @@
 <div id="software-hub-view-<?php echo $software['id']; ?>" class="software-hub-view">
     <ul>
+        <?php if ( get_option('software_hub_overview_enabled_'.$software['id'], "") ): ?>
         <li><a href="#software-hub-view-<?php echo $software['id']; ?>-overview">Overview</a></li>
+        <?php endif; ?>
+        
+        <?php if ( get_option('software_hub_installation_enabled_'.$software['id'], "") ): ?>
         <li><a href="#software-hub-view-<?php echo $software['id']; ?>-changelog">Changelog</a></li>
+        <?php endif; ?>
+        
+        <?php if ( get_option('software_hub_installation_enabled_'.$software['id'], "") ): ?>
         <li><a href="#software-hub-view-<?php echo $software['id']; ?>-installation">Installation</a></li>
+        <?php endif; ?>
+        
+        <?php if ( get_option('software_hub_configuration_enabled_'.$software['id'], "") ): ?>
         <li><a href="#software-hub-view-<?php echo $software['id']; ?>-configuration">Configuration</a></li>
+        <?php endif; ?>
+        
+        <?php if ( get_option('software_hub_issues_enabled_'.$software['id'], "") ): ?>
         <li><a href="#software-hub-view-<?php echo $software['id']; ?>-issues">Issues</a></li>
+        <?php endif; ?>
     </ul>
     
     <?php if ( get_option('software_hub_overview_enabled_'.$software['id'], "") ): ?>
