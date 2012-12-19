@@ -6,26 +6,39 @@
     <a href="?page=software_hub_menu&tab=<?php echo $softwareItem->id; ?>" class="nav-tab <?php if ( isset($_GET['tab']) && $_GET['tab'] == $softwareItem->id ) : ?> nav-tab-active <?php endif; ?>"><?php echo $softwareItem->name; ?></a>
     <?php endforeach; ?>
 </h2>
-	<form method="post" action="">
         <?php if ( !isset($_GET['tab']) || $_GET['tab'] == '' || isset($_GET['tab']) && $_GET['tab'] == 'software-hub-options' ) : ?>
-        <input type="hidden" name="software_hub_backend_page_type" value="hub" />
+        
         <table class="form-table">
                 <tr valign="top">
                         <th scope="row"><?php _e('Software', 'software_hub');?></th>
                         <td>
                             <ul>
                                 <?php foreach ( software_hub_get_software_instances() as $instance ) : ?>
-                                <li><?php echo $instance->name; ?></li>
+                                <li>
+                                    <form method="post" action="">
+                                    <input type="hidden" name="software_hub_backend_page_type" value="delete_software" />
+                                    <input type="hidden" name="software_id" value="<?php echo $instance->id; ?>" />
+                                    <?php echo $instance->name; ?> <input type="submit" value="Delete" />
+                                    </form>
+                                </li>
                                 <?php endforeach; ?>
                             </ul>
                         </td>
+                </tr>
+        </table>
+        <table class="form-table">
+         <form method="post" action="">
+                <tr valign="top">
+                        <th scope="row"><?php _e('Add New Software', 'software_hub');?></th>
                         <td>
-                                <small><?php _e("List of software instances", 'software_hub');?></small>
+                            <input type="hidden" name="software_hub_backend_page_type" value="hub" />
+                            <input type="text" name="software_hub_new" />
                         </td>
                 </tr>
         </table>
         <?php endif; ?>
                     <?php if ( isset($_GET['tab']) && $_GET['tab'] != 'software-hub-options' ) : ?>
+	<form method="post" action="">
                     <input type="hidden" name="software_id" value="<?php echo $software->id; ?>" />
                     <h4>Shortcode: [software_hub_view id="<?php echo $software->id; ?>"]</h4>
                     

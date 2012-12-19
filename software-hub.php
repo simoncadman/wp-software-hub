@@ -43,7 +43,14 @@ function software_hub_add_pages() {
 
 function software_hub_options () {
     global $wpdb;
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['software_id'] ) ) {
+    
+    if ( $_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['software_hub_backend_page_type'] == 'hub' ) {
+        if ( isset( $_POST['software_hub_new'] ) && strlen( $_POST['software_hub_new'] ) > 0 ) {
+            $wpdb->insert( $wpdb->prefix . "software_hub_software", array( 'name' => $_POST['software_hub_new'] ) );
+        }
+    } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['software_hub_backend_page_type'] == 'delete_software'  && isset( $_POST['software_id'] ) ) {
+        $wpdb->delete( $wpdb->prefix . "software_hub_software", array('id' => $_POST['software_id'] ) );
+    } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['software_id'] ) ) {
         $newfields = array();
         if ( $_POST['software_hub_backend_page_type'] == 'overview' ) {
             if ( isset( $_POST['software_hub_overview_enabled'] ) ) {
@@ -81,6 +88,7 @@ function software_hub_options () {
             }
             $newfields['issues'] = $_POST['software_hub_issues_text'];
         }
+        
         $wpdb->update( $wpdb->prefix . "software_hub_software", $newfields, array( 'id' => $_POST['software_id'] ) );
     }
     if ( isset($_GET['tab']) ) {
