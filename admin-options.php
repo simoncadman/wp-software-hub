@@ -45,6 +45,7 @@
                     
                     <h3 class="nav-tab-wrapper">
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=overview" class="nav-tab <?php if ( !isset($_GET['tab2']) || $_GET['tab2'] == '' || $_GET['tab2'] == 'overview' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Overview', 'software_hub_control');?></a>
+                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=releases" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'releases' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Releases', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=changelog" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changelog' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changelog', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=installation" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'installation' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Installation', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=configuration" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'configuration' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Configuration', 'software_hub_control');?></a>
@@ -66,6 +67,46 @@
                                             <?php wp_editor($software->overview, 'software_hub_overview_text'); ?>
                                     </td>
                             </tr>
+                    </table>
+                    <?php endif; ?>
+                    
+                    <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'releases' ) : ?>
+                    <input type="hidden" name="software_hub_backend_page_type" value="releases" />
+                    <table class="form-table">
+                        <tr valign="top">
+                            <th>
+                                Release Name
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Notes
+                            </th>
+                            <th>
+                                Changes
+                            </th>
+                        </tr>
+                        <?php foreach ( $releases as $release ) : ?>
+                        <tr valign="top">
+                            <td>
+                                    <input type="text" name="software_hub_release_name[<?php echo $release->id; ?>]" value="<?php echo $release->name; ?>" />
+                            </td>
+                            <td>
+                                    <input type="date" name="software_hub_release_time[<?php echo $release->id; ?>]" value="<?php echo $release->time; ?>" />
+                            </td>
+                            <td>
+                                    <?php wp_editor($release->notes, 'software_hub_release_time['.$release->id.']'); ?>
+                            </td>
+                            <td>
+                                <ul>
+                                    <?php foreach ( software_hub_changes($release->id) as $change ) : ?>
+                                    <li><?php echo $change->commit; ?> - <?php echo $change->note; ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
                     </table>
                     <?php endif; ?>
                     

@@ -95,10 +95,24 @@ function software_hub_options () {
         $software = $wpdb->get_row(
             $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_software where id = %s limit 1", $_GET['tab'] )
         );
+            
+        if ( isset( $_GET['tab2'] ) && $_GET['tab2'] == 'releases' ) {
+            $releases = $wpdb->get_results(
+                $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_software_release where software_id = %s order by time desc", $_GET['tab'] )
+            );
+        }
     }
     
     $softwareInstances = software_hub_get_software_instances();
     require_once(dirname(__FILE__) . '/admin-options.php');
+}
+
+function software_hub_changes ( $releaseid ) {
+    //software_release_id
+    global $wpdb;
+    return $wpdb->get_results(
+                $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_changelog where software_release_id = %s", $releaseid )
+    );
 }
 
 function software_hub_view ( $params ) {
@@ -146,6 +160,7 @@ function software_hub_install ( ) {
    $software_release_sql = "CREATE TABLE $software_release_table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
   name varchar (255) NOT NULL,
+  notes longtext NOT NULL,
   software_id mediumint(9) NOT NULL,
   time datetime NOT NULL,
   UNIQUE KEY id (id)
@@ -153,6 +168,8 @@ function software_hub_install ( ) {
    
    $changelog_sql = "CREATE TABLE $changelog_table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
+  commit varchar (50) NOT NULL,
+  note longtext NOT NULL,
   software_release_id mediumint(9) NOT NULL,
   UNIQUE KEY id (id)
     );";
