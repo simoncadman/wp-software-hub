@@ -46,6 +46,7 @@
                     <h3 class="nav-tab-wrapper">
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=overview" class="nav-tab <?php if ( !isset($_GET['tab2']) || $_GET['tab2'] == '' || $_GET['tab2'] == 'overview' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Overview', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=releases" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'releases' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Releases', 'software_hub_control');?></a>
+                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=changes" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changes' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changes', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=changelog" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changelog' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changelog', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=installation" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'installation' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Installation', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=configuration" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'configuration' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Configuration', 'software_hub_control');?></a>
@@ -72,6 +73,7 @@
                     
                     <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'releases' ) : ?>
                     <input type="hidden" name="software_hub_backend_page_type" value="releases" />
+                    <input type="button" class="button-primary" onclick="document.getElementById('addSoftwareRelease').style.display='';" value="Create New Release" />
                     <table class="form-table">
                         <tr valign="top">
                             <th>
@@ -86,17 +88,20 @@
                             <th>
                                 Changes
                             </th>
+                            <th>
+                                Actions
+                            </th>
                         </tr>
                         <?php foreach ( $releases as $release ) : ?>
                         <tr valign="top">
                             <td>
-                                    <input type="text" name="software_hub_release_name[<?php echo $release->id; ?>]" value="<?php echo $release->name; ?>" />
+                                    <?php echo $release->name; ?>
                             </td>
                             <td>
-                                    <input type="date" name="software_hub_release_time[<?php echo $release->id; ?>]" value="<?php echo $release->time; ?>" />
+                                    <?php echo $release->time; ?>
                             </td>
                             <td>
-                                    <?php wp_editor($release->notes, 'software_hub_release_time['.$release->id.']'); ?>
+                                    <?php echo $release->notes; ?>
                             </td>
                             <td>
                                 <ul>
@@ -104,6 +109,41 @@
                                     <li><?php echo $change->commit; ?> - <?php echo $change->note; ?></li>
                                     <?php endforeach; ?>
                                 </ul>
+                            </td>
+                            <td>
+                                    Delete
+                                    Modify
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                    <?php endif; ?>
+                    
+                    <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changes' ) : ?>
+                    <input type="hidden" name="software_hub_backend_page_type" value="changes" />
+                    <input type="button" class="button-primary" onclick="document.getElementById('addSoftwareChange').style.display='';" value="Create New Change" />
+                    <table class="form-table">
+                        <tr valign="top">
+                            <th>
+                                Release Name
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Notes
+                            </th>
+                        </tr>
+                        <?php foreach ( $changes as $change ) : ?>
+                        <tr valign="top">
+                            <td>
+                                    <?php echo $change->name; ?>
+                            </td>
+                            <td>
+                                    <?php echo $change->time; ?>
+                            </td>
+                            <td>
+                                    <?php echo $change->notes; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -183,8 +223,12 @@
                     <?php endif; ?>
                     <?php endif; ?>
                 
+                    <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'releases' ) : ?>
+                    
+                    <?php else: ?>
 		<p class="submit">
 			<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
 		</p>
+                    <?php endif; ?>
 	</form>
 </div>
