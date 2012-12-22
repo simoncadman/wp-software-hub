@@ -43,6 +43,7 @@ function software_hub_add_pages() {
 
 function software_hub_options () {
     global $wpdb;
+    $errors = array();
     
     if ( $_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['software_hub_backend_page_type'] == 'hub' ) {
         if ( isset( $_POST['software_hub_new'] ) && strlen( $_POST['software_hub_new'] ) > 0 ) {
@@ -50,6 +51,39 @@ function software_hub_options () {
         }
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['software_hub_backend_page_type'] == 'delete_software'  && isset( $_POST['software_id'] ) ) {
         $wpdb->delete( $wpdb->prefix . "software_hub_software", array('id' => $_POST['software_id'] ) );
+    } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['software_hub_backend_page_type'] == 'sync'  && isset( $_POST['software_id'] ) ) {
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Listener/ListenerInterface.php');
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Client/ClientInterface.php');
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Client/AbstractClient.php');
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Client/AbstractCurl.php');
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Client/Curl.php');
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Message/MessageInterface.php');
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Message/AbstractMessage.php');
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Message/Response.php');
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Util/Url.php');
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Message/RequestInterface.php');
+        require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Message/Request.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/Listener/ErrorListener.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Api/ApiInterface.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Api/AbstractApi.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Api/Repository/Commits.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Api/Repo.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Client.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/Message/Request.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/Message/Response.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/HttpClientInterface.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/HttpClient.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Exception/RuntimeException.php');
+        $githubclient = new Github\Client();
+        $commits = array();
+        try {
+            $commits = $githubclient->api('repo')->commits()->all('simoncadman', 'cups-cloud-print', array('sha' => 'master'));
+        } catch ( RuntimeException $e ) {
+            $errors[] = $e->getMessage();
+        }
+        foreach($commits as $commit ) {
+            //print_r($commit);
+        }
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['software_id'] ) ) {
         $newfields = array();
         if ( $_POST['software_hub_backend_page_type'] == 'overview' ) {

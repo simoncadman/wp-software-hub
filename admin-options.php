@@ -39,7 +39,7 @@
         </table>
         <?php endif; ?>
                     <?php if ( isset($_GET['tab']) && $_GET['tab'] != 'software-hub-options' ) : ?>
-	<form method="post" action="">
+	<form id="software_hub_form" method="post" action="">
                     <input type="hidden" name="software_id" value="<?php echo $software->id; ?>" />
                     <h4>Shortcode: [software_hub_view id="<?php echo $software->id; ?>"]</h4>
                     
@@ -120,8 +120,8 @@
                     <?php endif; ?>
                     
                     <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changes' ) : ?>
-                    <input type="hidden" name="software_hub_backend_page_type" value="changes" />
-                    <input type="button" class="button-primary" value="Sync" />
+                    <input type="hidden" id="software_hub_backend_page_type" name="software_hub_backend_page_type" value="changes" />
+                    <input type="button" class="button-primary" onclick="document.getElementById('software_hub_backend_page_type').value = 'sync'; document.getElementById('software_hub_form').submit();" value="Sync" />
                     <table class="form-table">
                         <tr valign="top">
                             <th>
