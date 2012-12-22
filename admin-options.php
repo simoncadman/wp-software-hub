@@ -121,29 +121,29 @@
                     
                     <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changes' ) : ?>
                     <input type="hidden" name="software_hub_backend_page_type" value="changes" />
-                    <input type="button" class="button-primary" onclick="document.getElementById('addSoftwareChange').style.display='';" value="Create New Change" />
+                    <input type="button" class="button-primary" value="Sync" />
                     <table class="form-table">
                         <tr valign="top">
                             <th>
-                                Release Name
+                                Time
                             </th>
                             <th>
-                                Date
+                                Commit
                             </th>
                             <th>
-                                Notes
+                                Note
                             </th>
                         </tr>
                         <?php foreach ( $changes as $change ) : ?>
                         <tr valign="top">
                             <td>
-                                    <?php echo $change->name; ?>
-                            </td>
-                            <td>
                                     <?php echo $change->time; ?>
                             </td>
                             <td>
-                                    <?php echo $change->notes; ?>
+                                    <?php echo $change->commit; ?>
+                            </td>
+                            <td>
+                                    <?php echo $change->note; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -223,7 +223,7 @@
                     <?php endif; ?>
                     <?php endif; ?>
                 
-                    <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'releases' ) : ?>
+                    <?php if ( isset($_GET['tab2']) && ( $_GET['tab2'] == 'releases' || $_GET['tab2'] == 'changes' ) ) : ?>
                     
                     <?php else: ?>
 		<p class="submit">

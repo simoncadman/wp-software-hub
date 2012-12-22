@@ -101,6 +101,12 @@ function software_hub_options () {
                 $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_software_release where software_id = %s order by time desc", $_GET['tab'] )
             );
         }
+            
+        if ( isset( $_GET['tab2'] ) && $_GET['tab2'] == 'changes' ) {
+            $changes = $wpdb->get_results(
+                $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_changelog where software_id = %s order by time desc", $_GET['tab'] )
+            );
+        }
     }
     
     $softwareInstances = software_hub_get_software_instances();
@@ -171,6 +177,8 @@ function software_hub_install ( ) {
   commit varchar (50) NOT NULL,
   note longtext NOT NULL,
   software_release_id mediumint(9) NOT NULL,
+  software_id mediumint(9) NOT NULL,
+  time datetime NOT NULL,
   UNIQUE KEY id (id)
     );";
 
