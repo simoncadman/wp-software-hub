@@ -63,6 +63,7 @@ function software_hub_options () {
         require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Util/Url.php');
         require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Message/RequestInterface.php');
         require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Message/Request.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/Listener/AuthListener.php');
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/Listener/ErrorListener.php');
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Api/ApiInterface.php');
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Api/AbstractApi.php');
@@ -74,15 +75,43 @@ function software_hub_options () {
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/HttpClientInterface.php');
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/HttpClient.php');
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Exception/RuntimeException.php');
+        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Exception/ApiLimitExceedException.php');
         $githubclient = new Github\Client();
         $commits = array();
         try {
-            $commits = $githubclient->api('repo')->commits()->all('simoncadman', 'cups-cloud-print', array('sha' => 'master'));
+            $lastsha = 'master';
+            
+            $i=0;
+            while ( $i < 1000 ) {
+                $i++;
+                $currentcommits = $githubclient->api('repo')->commits()->all('simoncadman', 'cups-cloud-print', array('sha' => $lastsha, 'per_page' => 100));
+                if ( count($currentcommits) > 0 ) {
+                    $commits = array_merge($commits, $currentcommits);
+                    $lastcommit = array_pop($currentcommits);
+                    $lastsha = $lastcommit['sha'];
+                    if ( count($currentcommits) == 0 ) {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            }
         } catch ( RuntimeException $e ) {
+            $errors[] = $e->getMessage();
+        } catch ( ApiLimitExceedException $e ) {
             $errors[] = $e->getMessage();
         }
         foreach($commits as $commit ) {
-            //print_r($commit);
+            $id = $commit['sha'];
+            $commitItem = $wpdb->get_row(
+                $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_changelog where commit = %s limit 1", $id )
+            );
+            if ( is_null($commitItem) ) {
+                $wpdb->insert( $wpdb->prefix . "software_hub_changelog", array( 'commit' => $id,
+                                                                                'note' => $commit['commit']['message'],
+                                                                                'software_id' => $_POST['software_id'],
+                                                                                'time' => gmdate('Y-m-d H:i:s', strtotime($commit['commit']['committer']['date']) )) );
+            }
         }
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['software_id'] ) ) {
         $newfields = array();
