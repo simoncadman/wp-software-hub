@@ -209,6 +209,7 @@ function software_hub_install ( ) {
    $changelog_table_name = $wpdb->prefix . "software_hub_changelog";
    $install_table_name = $wpdb->prefix . "software_hub_install";
    $os_table_name = $wpdb->prefix . "software_hub_os";
+   $os_group_table_name = $wpdb->prefix . "software_hub_os_group";
       
    $software_sql = "CREATE TABLE $software_table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -248,14 +249,24 @@ function software_hub_install ( ) {
    $install_sql = "CREATE TABLE $install_table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
   software_id mediumint(9) NOT NULL,
-  os_id mediumint(9) NOT NULL,
   content longtext NOT NULL,
+  os_group_id mediumint(9) NOT NULL,
   UNIQUE KEY id (id)
     );";
    
    $os_sql = "CREATE TABLE $os_table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
   name varchar(255) NOT NULL,
+  short_name varchar(255) NOT NULL,
+  os_group_id mediumint(9) NOT NULL,
+  UNIQUE KEY id (id)
+    );";
+   
+   $os_group_sql = "CREATE TABLE $os_group_table_name (
+  id mediumint(9) NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  short_name varchar(255) NOT NULL,
+  parent_id mediumint(9) NOT NULL,
   UNIQUE KEY id (id)
     );";
    
@@ -265,6 +276,7 @@ function software_hub_install ( ) {
    dbDelta($changelog_sql);
    dbDelta($install_sql);
    dbDelta($os_sql);
+   dbDelta($os_group_sql);
  
    add_option("software_hub_db_version", $software_hub_db_version);
 }
