@@ -72,8 +72,9 @@
                     <?php endif; ?>
                     
                     <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'releases' ) : ?>
-                    <input type="hidden" name="software_hub_backend_page_type" value="releases" />
+                    <input type="hidden" id="software_hub_backend_page_type" name="software_hub_backend_page_type" value="releases" />
                     <input type="button" class="button-primary" onclick="document.getElementById('addSoftwareRelease').style.display='';" value="Create New Release" />
+                    <input type="button" class="button-primary" onclick="document.getElementById('software_hub_backend_page_type').value = 'populate-changes'; document.getElementById('software_hub_form').submit();" value="Populate Changes" />
                     <table class="form-table">
                         <tr valign="top">
                             <th>
@@ -106,7 +107,7 @@
                             <td>
                                 <ul>
                                     <?php foreach ( software_hub_changes($release->id) as $change ) : ?>
-                                    <li><?php echo substr($change->commit, 0, 10); ?> - <?php echo $change->display_message; ?></li>
+                                    <li><?php echo substr($change->commit, 0, 10); ?> - <?php echo $change->time; ?> - <?php echo $change->display_message; ?></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </td>

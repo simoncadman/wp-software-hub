@@ -51,6 +51,18 @@ function software_hub_options () {
         }
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['software_hub_backend_page_type'] == 'delete_software'  && isset( $_POST['software_id'] ) ) {
         $wpdb->delete( $wpdb->prefix . "software_hub_software", array('id' => $_POST['software_id'] ) );
+    } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['software_hub_backend_page_type'] == 'populate-changes'  && isset( $_POST['software_id'] ) ) {
+        $unassignedChanges = $wpdb->get_results(
+                $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_changelog where software_id = %s and software_release_id = 0 order by time desc", $_POST['software_id'] )
+        );
+        foreach ( $unassignedChanges as $change ) {
+            $release = $wpdb->get_row(
+                $wpdb->prepare("select id, min(time) from `{$wpdb->prefix}software_hub_software_release` where software_id = %s and time > %s", $_POST['software_id'], $change->time )
+            );
+            if ( isset($release->id) ) {
+                $wpdb->update( $wpdb->prefix . "software_hub_changelog", array('software_release_id' => $release->id), array( 'id' => $change->id ) );
+            }
+        }
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['software_hub_backend_page_type'] == 'sync'  && isset( $_POST['software_id'] ) ) {
         require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Listener/ListenerInterface.php');
         require_once(dirname(__FILE__) . '/lib/buzz/lib/Buzz/Client/ClientInterface.php');
