@@ -237,6 +237,8 @@ where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s
                 $release->changes = $changes;
             }
             
+            $githubweb = 'https://github.com/simoncadman/CUPS-Cloud-Print';
+            
             require_once(dirname(__FILE__) . '/frontend-view-software-hub.php');
         }
     }
