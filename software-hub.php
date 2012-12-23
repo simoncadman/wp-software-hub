@@ -57,7 +57,7 @@ function software_hub_options () {
         );
         foreach ( $unassignedChanges as $change ) {
             $release = $wpdb->get_row(
-                $wpdb->prepare("select id, min(time) from `{$wpdb->prefix}software_hub_software_release` where software_id = %s and time > %s", $_POST['software_id'], $change->time )
+                $wpdb->prepare("select id from `{$wpdb->prefix}software_hub_software_release` where software_id = %s and time > %s order by time asc limit 1", $_POST['software_id'], $change->time )
             );
             if ( isset($release->id) ) {
                 $wpdb->update( $wpdb->prefix . "software_hub_changelog", array('software_release_id' => $release->id), array( 'id' => $change->id ) );

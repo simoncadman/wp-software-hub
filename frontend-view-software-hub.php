@@ -36,6 +36,9 @@
         ?>
         <?php foreach ( $releases as $release ) : ?>
         <h4><?php echo $release->name; ?> Release &ndash; <?php echo date('jS F Y', strtotime($release->time)); ?></h4>
+        <?php if ( strlen( $release->notes ) > 0 ): ?>
+        <?php echo $release->notes; ?>
+        <?php endif; ?>
         <ul>
             <?php foreach ( $release->changes as $change ): ?>
             <li><?php echo $change->note ?></li>
