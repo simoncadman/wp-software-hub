@@ -194,6 +194,27 @@ function software_hub_view ( $params ) {
         if ( !is_null($software) ) {
             wp_enqueue_script('software_hub', '/wp-content/plugins/software-hub/js/software-hub.js');
             wp_enqueue_style('software_hub', '/wp-content/plugins/software-hub/css/software-hub.css');
+            global $wpdb;
+            $osgroups = $wpdb->get_results($wpdb->prepare("SELECT *, 
+                                            ( select count(id) from {$wpdb->prefix}software_hub_os_group as childgroup 
+                                            where childgroup.parent_id = {$wpdb->prefix}software_hub_os_group.id ) 
+                                            as child_count 
+                                            FROM {$wpdb->prefix}software_hub_os_group 
+                                            inner join {$wpdb->prefix}software_hub_install on {$wpdb->prefix}software_hub_os_group.id =  {$wpdb->prefix}software_hub_install.os_group_id 
+                                            where parent_id = 0 
+                                            and {$wpdb->prefix}software_hub_install.software_id = %s 
+                                            order by display_order asc", $params['id'] )
+            );
+            
+            foreach ( $osgroups as $osgroup ) {
+                $osgroup->oses = $wpdb->get_results( 
+                                    $wpdb->prepare("SELECT *, ( select group_concat(' ' , short_name ) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oslist, ( select count(id) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oscount FROM {$wpdb->prefix}software_hub_os_group 
+                                    inner join {$wpdb->prefix}software_hub_install on {$wpdb->prefix}software_hub_os_group.id =  {$wpdb->prefix}software_hub_install.os_group_id 
+where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s 
+    and {$wpdb->prefix}software_hub_install.software_id = %s  order by display_order asc ", $osgroup->id, $osgroup->id, $params['id'] )
+                                );
+            }
+                                            
             require_once(dirname(__FILE__) . '/frontend-view-software-hub.php');
         }
     }
@@ -267,6 +288,7 @@ function software_hub_install ( ) {
   name varchar(255) NOT NULL,
   short_name varchar(255) NOT NULL,
   parent_id mediumint(9) NOT NULL,
+  display_order mediumint(9) NOT NULL,
   UNIQUE KEY id (id)
     );";
    
