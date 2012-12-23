@@ -233,6 +233,7 @@ function software_hub_install ( ) {
    $install_table_name = $wpdb->prefix . "software_hub_install";
    $os_table_name = $wpdb->prefix . "software_hub_os";
    $os_group_table_name = $wpdb->prefix . "software_hub_os_group";
+   $os_group_software_file_table_name = $wpdb->prefix . "software_hub_os_group_software_file";
       
    $software_sql = "CREATE TABLE $software_table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -294,6 +295,14 @@ function software_hub_install ( ) {
   UNIQUE KEY id (id)
     );";
    
+   $os_group_software_file_sql = "CREATE TABLE $os_group_software_file_table_name (
+  id mediumint(9) NOT NULL AUTO_INCREMENT,
+  os_group_id mediumint(9) NOT NULL,
+  software_id mediumint(9) NOT NULL,
+  url varchar(2048) NOT NULL,
+  UNIQUE KEY id (id)
+    );";
+   
    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
    dbDelta($software_sql);
    dbDelta($software_release_sql);
@@ -301,11 +310,23 @@ function software_hub_install ( ) {
    dbDelta($install_sql);
    dbDelta($os_sql);
    dbDelta($os_group_sql);
+   dbDelta($os_group_software_file_sql);
  
    add_option("software_hub_db_version", $software_hub_db_version);
+}
+
+function software_hub_download ( $params ) {
+    if ( isset($params) && is_array($params) && isset( $params['id'] ) && isset( $params['os_group_id'] ) ) {
+        global $wpdb;
+        $item = $wpdb->get_row(
+            $wpdb->prepare("SELECT url FROM {$wpdb->prefix}software_hub_os_group_software_file where software_id = %s and os_group_id = %s limit 1", $params['id'], $params['os_group_id'] )
+        );
+        return $item->url;
+    }
 }
 
 register_activation_hook(__FILE__,'software_hub_install');
 
 add_action('admin_menu', 'software_hub_add_pages');
 add_shortcode('software_hub_view', 'software_hub_view');
+add_shortcode('software_hub_download', 'software_hub_download');

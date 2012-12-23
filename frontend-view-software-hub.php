@@ -70,7 +70,7 @@
         <?php foreach ( $installitems as $install ) : ?>
         <div id="install<?= $install->id ?>" class="installtypes">
             <h4><?php echo $headerdetails[$install->id] ?></h4>
-            <?php echo $install->content; ?>
+            <?php echo do_shortcode($install->content); ?>
         </div>
         <?php endforeach; ?>
     </div>
