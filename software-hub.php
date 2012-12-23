@@ -257,6 +257,7 @@ function software_hub_install ( ) {
   notes longtext NOT NULL,
   software_id mediumint(9) NOT NULL,
   time datetime NOT NULL,
+  live tinyint (1) NOT NULL,
   UNIQUE KEY id (id)
     );";
    
@@ -325,9 +326,11 @@ function software_hub_download ( $params ) {
             $file = $item->file;
             if ( stripos($file, "%v") !== false ) { 
                 $lastrelease = $wpdb->get_row(
-                    $wpdb->prepare("SELECT name FROM {$wpdb->prefix}software_hub_software_release where software_id = %s order by time desc limit 1", $params['id'] )
+                    $wpdb->prepare("SELECT name FROM {$wpdb->prefix}software_hub_software_release where software_id = %s and live = 1 order by time desc limit 1", $params['id'] )
                 );
-                $file = str_replace("%v", $lastrelease->name, $file);
+                if ( isset($lastrelease->name) ) {
+                    $file = str_replace("%v", $lastrelease->name, $file);
+                }
             }
             return $file;
         }
