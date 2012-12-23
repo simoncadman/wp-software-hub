@@ -299,7 +299,7 @@ function software_hub_install ( ) {
   id mediumint(9) NOT NULL AUTO_INCREMENT,
   os_group_id mediumint(9) NOT NULL,
   software_id mediumint(9) NOT NULL,
-  url varchar(2048) NOT NULL,
+  file varchar(2048) NOT NULL,
   UNIQUE KEY id (id)
     );";
    
@@ -319,9 +319,9 @@ function software_hub_download ( $params ) {
     if ( isset($params) && is_array($params) && isset( $params['id'] ) && isset( $params['os_group_id'] ) ) {
         global $wpdb;
         $item = $wpdb->get_row(
-            $wpdb->prepare("SELECT url FROM {$wpdb->prefix}software_hub_os_group_software_file where software_id = %s and os_group_id = %s limit 1", $params['id'], $params['os_group_id'] )
+            $wpdb->prepare("SELECT file FROM {$wpdb->prefix}software_hub_os_group_software_file where software_id = %s and os_group_id = %s limit 1", $params['id'], $params['os_group_id'] )
         );
-        return $item->url;
+        return $item->file;
     }
 }
 
