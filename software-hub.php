@@ -109,6 +109,7 @@ function software_hub_options () {
             if ( is_null($commitItem) ) {
                 $wpdb->insert( $wpdb->prefix . "software_hub_changelog", array( 'commit' => $id,
                                                                                 'note' => $commit['commit']['message'],
+                                                                                'display_message' => $commit['commit']['message'],
                                                                                 'software_id' => $_POST['software_id'],
                                                                                 'time' => gmdate('Y-m-d H:i:s', strtotime($commit['commit']['committer']['date']) )) );
             }
@@ -272,6 +273,7 @@ function software_hub_install ( ) {
   id mediumint(9) NOT NULL AUTO_INCREMENT,
   commit varchar (50) NOT NULL,
   note longtext NOT NULL,
+  display_message longtext NOT NULL,
   software_release_id mediumint(9) NOT NULL,
   software_id mediumint(9) NOT NULL,
   time datetime NOT NULL,

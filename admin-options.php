@@ -106,7 +106,7 @@
                             <td>
                                 <ul>
                                     <?php foreach ( software_hub_changes($release->id) as $change ) : ?>
-                                    <li><?php echo substr($change->commit, 0, 10); ?> - <?php echo $change->note; ?></li>
+                                    <li><?php echo substr($change->commit, 0, 10); ?> - <?php echo $change->display_message; ?></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </td>
@@ -143,7 +143,7 @@
                                     <?php echo $change->commit; ?>
                             </td>
                             <td>
-                                    <?php echo $change->note; ?>
+                                    <?php echo $change->display_message; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
