@@ -197,7 +197,7 @@ function software_hub_view ( $params ) {
             global $wpdb;
             $osgroups = $wpdb->get_results($wpdb->prepare("SELECT *, 
                                             ( select count(id) from {$wpdb->prefix}software_hub_os_group as childgroup 
-                                            where childgroup.parent_id = {$wpdb->prefix}software_hub_os_group.id ) 
+                                            where childgroup.parent_id = {$wpdb->prefix}software_hub_os_group.id or childgroup.id = {$wpdb->prefix}software_hub_os_group.id ) 
                                             as child_count 
                                             FROM {$wpdb->prefix}software_hub_os_group 
                                             inner join {$wpdb->prefix}software_hub_install on {$wpdb->prefix}software_hub_os_group.id =  {$wpdb->prefix}software_hub_install.os_group_id 
@@ -205,13 +205,13 @@ function software_hub_view ( $params ) {
                                             and {$wpdb->prefix}software_hub_install.software_id = %s 
                                             order by display_order asc", $params['id'] )
             );
-            
+                                            
             foreach ( $osgroups as $osgroup ) {
                 $osgroup->oses = $wpdb->get_results( 
                                     $wpdb->prepare("SELECT *, ( select group_concat(' ' , short_name ) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oslist, ( select count(id) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oscount FROM {$wpdb->prefix}software_hub_os_group 
                                     inner join {$wpdb->prefix}software_hub_install on {$wpdb->prefix}software_hub_os_group.id =  {$wpdb->prefix}software_hub_install.os_group_id 
 where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s 
-    and {$wpdb->prefix}software_hub_install.software_id = %s  order by display_order asc ", $osgroup->id, $osgroup->id, $params['id'] )
+    and {$wpdb->prefix}software_hub_install.software_id = %s  order by display_order asc ", $osgroup->os_group_id, $osgroup->os_group_id, $params['id'] )
                                 );
             }
             

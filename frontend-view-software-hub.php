@@ -46,7 +46,7 @@
         <select onchange="softwareHubUpdateInstallInstructions();" id="installdropdown">
         <option value="">- Select Operating System -</option>
         <?php foreach ( $osgroups as $osgroup ) : ?>
-        <?php if ( $osgroup->child_count > 0 ): ?>
+        <?php if ( $osgroup->child_count > 1 ): ?>
         <optgroup label="  - <?php echo $osgroup->short_name; ?>">
         <?php endif; ?>
             <?php foreach ( $osgroup->oses as $os ) : ?>
@@ -55,11 +55,13 @@
             if ( $os->oscount > 1 ) { 
                 $headerdetails[$os->id] .= ' etc - ';
                 $headerdetails[$os->id] .= $os->name;
+            } else {
+                $headerdetails[$os->id] = $osgroup->name;
             }
             ?>
             <option value="<?php echo $os->id; ?>"><?php echo $headerdetails[$os->id] ?></option>
             <?php endforeach; ?>
-        <?php if ( $osgroup->child_count > 0 ): ?>
+        <?php if ( $osgroup->child_count > 1 ): ?>
         </optgroup>
         <?php endif; ?>
         <?php endforeach; ?>
