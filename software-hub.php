@@ -233,7 +233,7 @@ where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s
             $releases = $wpdb->get_results($wpdb->prepare("SELECT * from {$wpdb->prefix}software_hub_software_release where software_id = %s order by time desc ", $params['id'] ));
             
             foreach ( $releases as $release ) {
-                $changes = $wpdb->get_results($wpdb->prepare("SELECT * from {$wpdb->prefix}software_hub_changelog where software_release_id = %s order by time desc ", $release->id ));
+                $changes = $wpdb->get_results($wpdb->prepare("SELECT * from {$wpdb->prefix}software_hub_changelog where software_release_id = %s and live = 1 order by time desc ", $release->id ));
                 $release->changes = $changes;
             }
             
@@ -289,6 +289,7 @@ function software_hub_install ( ) {
   software_release_id mediumint(9) NOT NULL,
   software_id mediumint(9) NOT NULL,
   time datetime NOT NULL,
+  live tinyint (1) NOT NULL,
   UNIQUE KEY id (id)
     );";
 

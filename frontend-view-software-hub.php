@@ -41,7 +41,7 @@
         <?php endif; ?>
         <ul>
             <?php foreach ( $release->changes as $change ): ?>
-            <li><?php echo $change->note ?></li>
+            <li><?php echo $change->display_message ?></li>
             <?php endforeach; ?>
         </ul>
         <?php endforeach; ?>

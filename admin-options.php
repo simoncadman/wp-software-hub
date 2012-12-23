@@ -107,7 +107,11 @@
                             <td>
                                 <ul>
                                     <?php foreach ( software_hub_changes($release->id) as $change ) : ?>
-                                    <li><?php echo substr($change->commit, 0, 10); ?> - <?php echo $change->time; ?> - <?php echo $change->display_message; ?></li>
+                                    <?php if ( $change->live == 1 ): ?>
+                                    <li><?php echo $change->display_message; ?></li>
+                                    <?php else: ?>
+                                    <li style="color:grey;"><?php echo $change->display_message; ?></li>
+                                    <?php endif; ?>
                                     <?php endforeach; ?>
                                 </ul>
                             </td>
