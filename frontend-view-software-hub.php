@@ -34,6 +34,14 @@
         <?php
         echo $software->changelog;
         ?>
+        <?php foreach ( $releases as $release ) : ?>
+        <h4><?php echo $release->name; ?> Release &ndash; <?php echo date('jS F Y', strtotime($release->time)); ?></h4>
+        <ul>
+            <?php foreach ( $release->changes as $change ): ?>
+            <li><?php echo $change->note ?></li>
+            <?php endforeach; ?>
+        </ul>
+        <?php endforeach; ?>
     </div>
     <?php endif; ?>
     

@@ -216,7 +216,14 @@ where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s
             }
             
             $installitems = $wpdb->get_results($wpdb->prepare("SELECT * from {$wpdb->prefix}software_hub_install where software_id = %s ", $params['id'] ));
-                                            
+            
+            $releases = $wpdb->get_results($wpdb->prepare("SELECT * from {$wpdb->prefix}software_hub_software_release where software_id = %s order by time desc ", $params['id'] ));
+            
+            foreach ( $releases as $release ) {
+                $changes = $wpdb->get_results($wpdb->prepare("SELECT * from {$wpdb->prefix}software_hub_changelog where software_release_id = %s order by time desc ", $release->id ));
+                $release->changes = $changes;
+            }
+            
             require_once(dirname(__FILE__) . '/frontend-view-software-hub.php');
         }
     }
