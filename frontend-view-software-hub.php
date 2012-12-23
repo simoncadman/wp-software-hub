@@ -60,7 +60,6 @@
             <option value="<?php echo $os->id; ?>"><?php echo $headerdetails[$os->id] ?></option>
             <?php endforeach; ?>
         <?php if ( $osgroup->child_count > 0 ): ?>
-            <option value="<?php echo $osgroup->id; ?>">Other <?php echo $osgroup->name; ?></option>
         </optgroup>
         <?php endif; ?>
         <?php endforeach; ?>
