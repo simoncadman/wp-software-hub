@@ -57,6 +57,18 @@
                     <input type="hidden" name="software_hub_backend_page_type" value="overview" />
                     <table class="form-table">
                             <tr valign="top">
+                                    <th scope="row"><?php _e('Github User', 'software_hub');?></th>
+                                    <td>
+                                            <input type="text" name="software_hub_github_user" value="<?php echo $software->github_user ?>" />
+                                    </td>
+                            </tr>
+                            <tr valign="top">
+                                    <th scope="row"><?php _e('Github Repository', 'software_hub');?></th>
+                                    <td>
+                                            <input type="text" name="software_hub_github_repository" value="<?php echo $software->github_repository ?>" />
+                                    </td>
+                            </tr>
+                            <tr valign="top">
                                     <th scope="row"><?php _e('Show Overview', 'software_hub');?></th>
                                     <td>
                                             <input type="checkbox" name="software_hub_overview_enabled" <?php if ( $software->overview_enabled == 1 ) : ?>checked<?php endif; ?> />

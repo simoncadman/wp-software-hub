@@ -90,13 +90,16 @@ function software_hub_options () {
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Exception/ApiLimitExceedException.php');
         $githubclient = new Github\Client();
         $commits = array();
+        $software = $wpdb->get_row(
+            $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_software where id = %s limit 1", $_POST['software_id'] )
+        );
         try {
             $lastsha = 'master';
             
             $i=0;
             while ( $i < 1000 ) {
                 $i++;
-                $currentcommits = $githubclient->api('repo')->commits()->all('simoncadman', 'cups-cloud-print', array('sha' => $lastsha, 'per_page' => 100));
+                $currentcommits = $githubclient->api('repo')->commits()->all($software->github_user, $software->github_repository, array('sha' => $lastsha, 'per_page' => 100));
                 if ( count($currentcommits) > 0 ) {
                     $commits = array_merge($commits, $currentcommits);
                     $lastcommit = array_pop($currentcommits);
@@ -116,7 +119,7 @@ function software_hub_options () {
         foreach($commits as $commit ) {
             $id = $commit['sha'];
             $commitItem = $wpdb->get_row(
-                $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_changelog where commit = %s limit 1", $id )
+                $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_changelog where software_id = %s and commit = %s limit 1", $_POST['software_id'], $id )
             );
             if ( is_null($commitItem) ) {
                 $wpdb->insert( $wpdb->prefix . "software_hub_changelog", array( 'commit' => $id,
@@ -135,6 +138,8 @@ function software_hub_options () {
                 $newfields['overview_enabled'] = 0;
             }
             $newfields['overview'] = stripslashes($_POST['software_hub_overview_text']);
+            $newfields['github_user'] = $_POST['software_hub_github_user'];
+            $newfields['github_repository'] = $_POST['software_hub_github_repository'];
         } else if ( $_POST['software_hub_backend_page_type'] == 'changelog' ) {
             if ( isset( $_POST['software_hub_changelog_enabled'] ) ) {
                 $newfields['changelog_enabled'] = $_POST['software_hub_changelog_enabled'] === 'on';
@@ -237,7 +242,7 @@ where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s
                 $release->changes = $changes;
             }
             
-            $githubweb = 'https://github.com/simoncadman/CUPS-Cloud-Print';
+            $githubweb = 'https://github.com/'.$software->github_user.'/'.$software->github_repository;
             
             require_once(dirname(__FILE__) . '/frontend-view-software-hub.php');
         }
@@ -260,6 +265,8 @@ function software_hub_install ( ) {
    $software_sql = "CREATE TABLE $software_table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
   name varchar (255) NOT NULL,
+  github_user varchar (255) NOT NULL,
+  github_repository varchar (255) NOT NULL,
   overview_enabled tinyint(1) NOT NULL,
   overview longtext NOT NULL,
   changelog_enabled tinyint(1) NOT NULL,
