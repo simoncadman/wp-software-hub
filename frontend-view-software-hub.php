@@ -40,16 +40,24 @@
     <?php if ( $software->installation_enabled ): ?>
     <div id="software-hub-view-<?php echo $software->id; ?>-installation">
         <?php
+        $headerdetails = array();
         echo $software->installation;
         ?>
-        <select onchange="updateInstallInstructions();" id="installtypeselection">
+        <select onchange="softwareHubUpdateInstallInstructions();" id="installdropdown">
         <option value="">- Select Operating System -</option>
         <?php foreach ( $osgroups as $osgroup ) : ?>
         <?php if ( $osgroup->child_count > 0 ): ?>
         <optgroup label="  - <?php echo $osgroup->short_name; ?>">
         <?php endif; ?>
             <?php foreach ( $osgroup->oses as $os ) : ?>
-            <option value="<?php echo $os->id; ?>"><?php echo $os->oslist; if ( $os->oscount > 1 ): ?> etc - <?php echo $os->name; ?><?php endif; ?></option>
+            <?php
+            $headerdetails[$os->id] = $os->oslist; 
+            if ( $os->oscount > 1 ) { 
+                $headerdetails[$os->id] .= ' etc - ';
+                $headerdetails[$os->id] .= $os->name;
+            }
+            ?>
+            <option value="<?php echo $os->id; ?>"><?php echo $headerdetails[$os->id] ?></option>
             <?php endforeach; ?>
         <?php if ( $osgroup->child_count > 0 ): ?>
             <option value="<?php echo $osgroup->id; ?>">Other <?php echo $osgroup->name; ?></option>
@@ -57,6 +65,13 @@
         <?php endif; ?>
         <?php endforeach; ?>
         </select>
+        
+        <?php foreach ( $installitems as $install ) : ?>
+        <div id="install<?= $install->id ?>" class="installtypes">
+            <h4><?php echo $headerdetails[$install->id] ?></h4>
+            <?php echo $install->content; ?>
+        </div>
+        <?php endforeach; ?>
     </div>
     <?php endif; ?>
     

@@ -214,6 +214,8 @@ where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s
     and {$wpdb->prefix}software_hub_install.software_id = %s  order by display_order asc ", $osgroup->id, $osgroup->id, $params['id'] )
                                 );
             }
+            
+            $installitems = $wpdb->get_results($wpdb->prepare("SELECT * from {$wpdb->prefix}software_hub_install where software_id = %s ", $params['id'] ));
                                             
             require_once(dirname(__FILE__) . '/frontend-view-software-hub.php');
         }
