@@ -321,7 +321,16 @@ function software_hub_download ( $params ) {
         $item = $wpdb->get_row(
             $wpdb->prepare("SELECT file FROM {$wpdb->prefix}software_hub_os_group_software_file where software_id = %s and os_group_id = %s limit 1", $params['id'], $params['os_group_id'] )
         );
-        return $item->file;
+        if ( isset($item->file) ) {
+            $file = $item->file;
+            if ( stripos($file, "%v") !== false ) { 
+                $lastrelease = $wpdb->get_row(
+                    $wpdb->prepare("SELECT name FROM {$wpdb->prefix}software_hub_software_release where software_id = %s order by time desc limit 1", $params['id'] )
+                );
+                $file = str_replace("%v", $lastrelease->name, $file);
+            }
+            return $file;
+        }
     }
 }
 
