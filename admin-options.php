@@ -212,6 +212,7 @@
                     
                     <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'install' ) : ?>
                     <input type="hidden" name="software_hub_backend_page_type" value="install" />
+                    <input type="hidden" name="os_group_id" value="<?php echo $osgroupid; ?>" />
                     
                     <h3 class="nav-tab-wrapper">
                         <?php $first = true; foreach ( $osgroups as $osgroup ): ?>

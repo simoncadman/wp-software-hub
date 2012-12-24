@@ -131,6 +131,7 @@ function software_hub_options () {
         }
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['software_id'] ) ) {
         $newfields = array();
+        $doUpdate = true;
         if ( $_POST['software_hub_backend_page_type'] == 'overview' ) {
             if ( isset( $_POST['software_hub_overview_enabled'] ) ) {
                 $newfields['overview_enabled'] = $_POST['software_hub_overview_enabled'] === 'on';
@@ -155,6 +156,12 @@ function software_hub_options () {
                 $newfields['installation_enabled'] = 0;
             }
             $newfields['installation'] = stripslashes($_POST['software_hub_installation_text']);
+        } else if ( $_POST['software_hub_backend_page_type'] == 'install' ) {
+            $doUpdate = false;
+            $data = array( 'os_group_id' => $_POST['os_group_id'],
+                           'software_id' => $_POST['software_id'],
+                           'content' => stripslashes($_POST['software_hub_install']) );
+            $wpdb->update( $wpdb->prefix . "software_hub_install", $data, array('software_id' => $_POST['software_id'], 'os_group_id' => $_POST['os_group_id']) );
         } else if ( $_POST['software_hub_backend_page_type'] == 'configuration' ) {
             if ( isset( $_POST['software_hub_configuration_enabled'] ) ) {
                 $newfields['configuration_enabled'] = $_POST['software_hub_configuration_enabled'] === 'on';
@@ -171,7 +178,9 @@ function software_hub_options () {
             $newfields['issues'] = stripslashes($_POST['software_hub_issues_text']);
         }
         
-        $wpdb->update( $wpdb->prefix . "software_hub_software", $newfields, array( 'id' => $_POST['software_id'] ) );
+        if ( $doUpdate ) {
+            $wpdb->update( $wpdb->prefix . "software_hub_software", $newfields, array( 'id' => $_POST['software_id'] ) );
+        }
     }
     if ( isset($_GET['tab']) ) {
         $software = $wpdb->get_row(
