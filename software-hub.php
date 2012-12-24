@@ -161,7 +161,10 @@ function software_hub_options () {
             $data = array( 'os_group_id' => $_POST['os_group_id'],
                            'software_id' => $_POST['software_id'],
                            'content' => stripslashes($_POST['software_hub_install']) );
-            $wpdb->update( $wpdb->prefix . "software_hub_install", $data, array('software_id' => $_POST['software_id'], 'os_group_id' => $_POST['os_group_id']) );
+            $affected = $wpdb->update( $wpdb->prefix . "software_hub_install", $data, array('software_id' => $_POST['software_id'], 'os_group_id' => $_POST['os_group_id']) );
+            if ( $affected == 0 ) {
+                $wpdb->insert( $wpdb->prefix . "software_hub_install", $data );
+            }
         } else if ( $_POST['software_hub_backend_page_type'] == 'configuration' ) {
             if ( isset( $_POST['software_hub_configuration_enabled'] ) ) {
                 $newfields['configuration_enabled'] = $_POST['software_hub_configuration_enabled'] === 'on';
