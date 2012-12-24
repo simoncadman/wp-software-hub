@@ -189,6 +189,28 @@ function software_hub_options () {
                 $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_changelog where software_id = %s order by time desc", $_GET['tab'] )
             );
         }
+        
+        if ( isset( $_GET['tab2'] ) && $_GET['tab2'] == 'install' ) {
+            $osgroups = $wpdb->get_results(
+                "SELECT * FROM {$wpdb->prefix}software_hub_os_group order by display_order asc "
+            );
+            
+            $osgroupid = $osgroups[0]->id;
+            
+            if ( isset($_GET['tab3']) ) {
+                $osgroupid = $_GET['tab3'];
+            }
+                
+            $installtext = '';
+            if ( isset($osgroupid) ) {
+                $install = $wpdb->get_row(
+                    $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_install where software_id = %s and os_group_id = %s ", $_GET['tab'], $osgroupid )
+                );
+                if ( isset($install->content) ) {
+                    $installtext = $install->content;
+                }
+            }
+        }
     }
     
     $softwareInstances = software_hub_get_software_instances();

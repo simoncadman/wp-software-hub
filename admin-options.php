@@ -46,9 +46,10 @@
                     <h3 class="nav-tab-wrapper">
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=overview" class="nav-tab <?php if ( !isset($_GET['tab2']) || $_GET['tab2'] == '' || $_GET['tab2'] == 'overview' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Overview', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=releases" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'releases' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Releases', 'software_hub_control');?></a>
-                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=changes" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changes' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changes', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=changelog" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changelog' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changelog', 'software_hub_control');?></a>
+                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=changes" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changes' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changes', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=installation" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'installation' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Installation', 'software_hub_control');?></a>
+                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=install" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'install' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Install Instructions', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=configuration" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'configuration' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Configuration', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=issues" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'issues' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Issues', 'software_hub_control');?></a>
                     </h3>
@@ -204,6 +205,24 @@
                                     <th scope="row"><?php _e('Installation', 'software_hub');?></th>
                                     <td>
                                             <?php wp_editor($software->installation, 'software_hub_installation_text'); ?>
+                                    </td>
+                            </tr>
+                    </table>
+                    <?php endif; ?>
+                    
+                    <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'install' ) : ?>
+                    <input type="hidden" name="software_hub_backend_page_type" value="install" />
+                    
+                    <h3 class="nav-tab-wrapper">
+                        <?php $first = true; foreach ( $osgroups as $osgroup ): ?>
+                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=install&tab3=<?php echo $osgroup->id; ?>" class="nav-tab <?php if ( ( $first && !isset($_GET['tab3']) ) || ( $first && $_GET['tab3']  == '' ) || isset($_GET['tab3']) && $_GET['tab3'] == $osgroup->id ): ?> nav-tab-active <?php endif; ?>"><?php _e($osgroup->short_name, 'software_hub_control');?></a>
+                        <?php $first = false; endforeach; ?>
+                    </h3>
+                    <table class="form-table">
+                            <tr valign="top">
+                                    <th scope="row"><?php _e('Install Instructions', 'software_hub');?></th>
+                                    <td>
+                                            <?php wp_editor($installtext, 'software_hub_install'); ?>
                                     </td>
                             </tr>
                     </table>
