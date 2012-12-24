@@ -63,8 +63,12 @@
             <?php foreach ( $osgroup->oses as $os ) : ?>
             <?php
             $headerdetails[$os->id] = $os->oslist; 
-            if ( $os->oscount > 1 ) { 
-                $headerdetails[$os->id] .= ' etc - ';
+            if ( $os->oscount > 0 ) { 
+                if ( $os->oscount > 1 ) {
+                    $headerdetails[$os->id] .= ' etc - ';
+                } else {
+                    $headerdetails[$os->id] .= ' - ';
+                }
                 $headerdetails[$os->id] .= $os->name;
             } else {
                 $headerdetails[$os->id] = $osgroup->name;
