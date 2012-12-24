@@ -223,7 +223,7 @@
                     $downloadshortcodedata = do_shortcode( $downloadshortcode );
                     if ( $downloadshortcodedata != "" ):
                     ?>
-                    <p><strong>Download file for latest release ( <?php echo $downloadshortcodedata; ?> ):</strong> <?php echo $downloadshortcode; ?></p>
+                    <p><strong>Download file for latest release ( <?php echo $downloadshortcodedata; ?> ):</strong></p><p><?php echo $downloadshortcode; ?></p>
                     <?php
                     endif;
                     ?>
@@ -231,7 +231,7 @@
                     $downloadprefixshortcodedata = do_shortcode( $downloadprefixshortcode );
                     if ( $downloadprefixshortcodedata != "" ):
                     ?>
-                    <p><strong>Download prefix ( <?php echo $downloadprefixshortcodedata; ?> ):</strong> <?php echo $downloadprefixshortcode; ?></p>
+                    <p><strong>Download prefix ( <?php echo $downloadprefixshortcodedata; ?> ):</strong></p><p><?php echo $downloadprefixshortcode; ?></p>
                     <?php
                     endif;
                     ?>
