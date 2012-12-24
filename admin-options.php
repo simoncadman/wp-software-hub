@@ -218,6 +218,23 @@
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=install&tab3=<?php echo $osgroup->id; ?>" class="nav-tab <?php if ( ( $first && !isset($_GET['tab3']) ) || ( $first && $_GET['tab3']  == '' ) || isset($_GET['tab3']) && $_GET['tab3'] == $osgroup->id ): ?> nav-tab-active <?php endif; ?>"><?php _e($osgroup->short_name, 'software_hub_control');?></a>
                         <?php $first = false; endforeach; ?>
                     </h3>
+                    <h3>Shortcodes:</h3>
+                    <?php $downloadshortcode = '[software_hub_download id="'.$software->id.'" os_group_id="'.$osgroupid.'"]'; 
+                    $downloadshortcodedata = do_shortcode( $downloadshortcode );
+                    if ( $downloadshortcodedata != "" ):
+                    ?>
+                    <p><strong>Download file for latest release ( <?php echo $downloadshortcodedata; ?> ):</strong> <?php echo $downloadshortcode; ?></p>
+                    <?php
+                    endif;
+                    ?>
+                    <?php $downloadprefixshortcode = '[software_hub_download_prefix id="'.$software->id.'"]'; 
+                    $downloadprefixshortcodedata = do_shortcode( $downloadprefixshortcode );
+                    if ( $downloadprefixshortcodedata != "" ):
+                    ?>
+                    <p><strong>Download prefix ( <?php echo $downloadprefixshortcodedata; ?> ):</strong> <?php echo $downloadprefixshortcode; ?></p>
+                    <?php
+                    endif;
+                    ?>
                     <table class="form-table">
                             <tr valign="top">
                                     <th scope="row"><?php _e('Install Instructions', 'software_hub');?></th>
