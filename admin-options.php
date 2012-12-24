@@ -69,6 +69,12 @@
                                     </td>
                             </tr>
                             <tr valign="top">
+                                    <th scope="row"><?php _e('Download URL Prefix', 'software_hub');?></th>
+                                    <td>
+                                            <input type="text" name="software_hub_download_url_prefix" value="<?php echo $software->download_url_prefix ?>" />
+                                    </td>
+                            </tr>
+                            <tr valign="top">
                                     <th scope="row"><?php _e('Show Overview', 'software_hub');?></th>
                                     <td>
                                             <input type="checkbox" name="software_hub_overview_enabled" <?php if ( $software->overview_enabled == 1 ) : ?>checked<?php endif; ?> />

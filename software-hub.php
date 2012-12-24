@@ -140,6 +140,7 @@ function software_hub_options () {
             $newfields['overview'] = stripslashes($_POST['software_hub_overview_text']);
             $newfields['github_user'] = $_POST['software_hub_github_user'];
             $newfields['github_repository'] = $_POST['software_hub_github_repository'];
+            $newfields['download_url_prefix'] = $_POST['software_hub_download_url_prefix'];
         } else if ( $_POST['software_hub_backend_page_type'] == 'changelog' ) {
             if ( isset( $_POST['software_hub_changelog_enabled'] ) ) {
                 $newfields['changelog_enabled'] = $_POST['software_hub_changelog_enabled'] === 'on';
@@ -267,6 +268,7 @@ function software_hub_install ( ) {
   name varchar (255) NOT NULL,
   github_user varchar (255) NOT NULL,
   github_repository varchar (255) NOT NULL,
+  download_url_prefix varchar (255) NOT NULL,
   overview_enabled tinyint(1) NOT NULL,
   overview longtext NOT NULL,
   changelog_enabled tinyint(1) NOT NULL,
@@ -368,8 +370,19 @@ function software_hub_download ( $params ) {
     }
 }
 
+function software_hub_download_prefix ( $params ) {
+    if ( isset($params) && is_array($params) && isset( $params['id'] ) ) {
+        global $wpdb;
+        $software = $wpdb->get_row(
+            $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_software where id = %s limit 1", $params['id'] )
+        );
+        return $software->download_url_prefix;
+    }
+}
+
 register_activation_hook(__FILE__,'software_hub_install');
 
 add_action('admin_menu', 'software_hub_add_pages');
 add_shortcode('software_hub_view', 'software_hub_view');
 add_shortcode('software_hub_download', 'software_hub_download');
+add_shortcode('software_hub_download_prefix', 'software_hub_download_prefix');
