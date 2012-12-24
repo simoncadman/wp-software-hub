@@ -158,11 +158,20 @@ function software_hub_options () {
             $newfields['installation'] = stripslashes($_POST['software_hub_installation_text']);
         } else if ( $_POST['software_hub_backend_page_type'] == 'install' ) {
             $doUpdate = false;
+            $live = 0;
+            if ( isset($_POST['software_hub_install_live']) && $_POST['software_hub_install_live'] == 'on' ) {
+                $live = 1;
+            }
             $data = array( 'os_group_id' => $_POST['os_group_id'],
                            'software_id' => $_POST['software_id'],
-                           'content' => stripslashes($_POST['software_hub_install']) );
-            $affected = $wpdb->update( $wpdb->prefix . "software_hub_install", $data, array('software_id' => $_POST['software_id'], 'os_group_id' => $_POST['os_group_id']) );
-            if ( $affected == 0 ) {
+                           'content' => stripslashes($_POST['software_hub_install']),
+                           'live' => $live);
+            $foundinstall = $wpdb->get_row(
+                $wpdb->prepare("SELECT count(id) as count FROM {$wpdb->prefix}software_hub_install where software_id = %s and os_group_id = %s limit 1", $_POST['software_id'], $_POST['os_group_id'] )
+            );
+            if ( $foundinstall->count > 0 ) {
+                $wpdb->update( $wpdb->prefix . "software_hub_install", $data, array('software_id' => $_POST['software_id'], 'os_group_id' => $_POST['os_group_id']) );
+            } else {
                 $wpdb->insert( $wpdb->prefix . "software_hub_install", $data );
             }
         } else if ( $_POST['software_hub_backend_page_type'] == 'configuration' ) {
@@ -264,7 +273,7 @@ function software_hub_view ( $params ) {
                                     $wpdb->prepare("SELECT *, ( select group_concat(' ' , short_name ) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oslist, ( select count(id) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oscount FROM {$wpdb->prefix}software_hub_os_group 
                                     inner join {$wpdb->prefix}software_hub_install on {$wpdb->prefix}software_hub_os_group.id =  {$wpdb->prefix}software_hub_install.os_group_id 
 where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s 
-    and {$wpdb->prefix}software_hub_install.software_id = %s  order by display_order asc ", $osgroup->os_group_id, $osgroup->os_group_id, $params['id'] )
+    and {$wpdb->prefix}software_hub_install.software_id = %s and live = 1 order by display_order asc ", $osgroup->os_group_id, $osgroup->os_group_id, $params['id'] )
                                 );
             }
             
@@ -343,6 +352,7 @@ function software_hub_install ( ) {
   software_id mediumint(9) NOT NULL,
   content longtext NOT NULL,
   os_group_id mediumint(9) NOT NULL,
+  live tinyint (1) NOT NULL,
   UNIQUE KEY id (id)
     );";
    
