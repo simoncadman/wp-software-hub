@@ -384,6 +384,29 @@ function software_hub_install ( ) {
   UNIQUE KEY id (id)
     );";
    
+$os_data_sql = "REPLACE INTO $os_table_name (`id`, `name`, `short_name`, `os_group_id`) VALUES
+(1, 'Ubuntu Linux', 'Ubuntu', 7),
+(2, 'Kubuntu Linux', 'Kubuntu', 7),
+(3, 'Xubuntu Linux', 'Xubuntu', 7),
+(4, 'Linux Mint', 'Mint', 7),
+(5, 'Debian', 'Debian', 2),
+(6, 'MEPIS Linux', 'MEPIS', 2),
+(7, 'CentOS', 'CentOS', 5),
+(8, 'Fedora', 'Fedora', 5),
+(9, 'Oracle', 'Oracle', 5),
+(10, 'Redhat Enterprise Linux', 'RHEL', 5),
+(11, 'Scientific Linux', 'Scientific Linux', 5),
+(12, 'OpenSUSE', 'OpenSUSE', 6),
+(13, 'SUSE EL', 'SUSE EL', 6),
+(14, 'Gentoo', 'Gentoo', 3),
+(15, 'Sabayon', 'Sabayon', 3),
+(16, 'Funtoo', 'Funtoo', 3),
+(17, 'Arch Linux', 'Arch', 4),
+(18, 'Chakra', 'Chakra', 4),
+(21, 'Other (Source install)', 'Other (Source install)', 10),
+(22, 'Mac OS X', 'Mac OS X', 8),
+(23, 'Windows', 'Windows', 9);";
+   
    $os_group_sql = "CREATE TABLE $os_group_table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
   name varchar(255) NOT NULL,
@@ -392,6 +415,19 @@ function software_hub_install ( ) {
   display_order mediumint(9) NOT NULL,
   UNIQUE KEY id (id)
     );";
+
+$os_group_data_sql = "REPLACE INTO $os_group_table_name (`id`, `name`, `short_name`, `parent_id`, `display_order`) VALUES
+(1, '.rpm file based installation', 'RPM Based', 0, 5),
+(2, '.deb file based installation', 'Deb Based', 0, 2),
+(3, 'Portage Ebuild', 'Ebuild', 0, 7),
+(4, 'Arch Pacman', 'Arch', 0, 6),
+(5, 'Yum Based', 'Yum', 1, 3),
+(6, 'Zypper Based', 'Zypper', 1, 4),
+(7, 'PPA Based Installation', 'PPA', 2, 1),
+(8, 'Darwin Based', 'Mac', 0, 8),
+(9, 'Windows Based', 'Windows', 0, 9),
+(10, 'Source Install', 'Source', 0, 10);
+   ";
    
    $os_group_software_file_sql = "CREATE TABLE $os_group_software_file_table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -409,7 +445,10 @@ function software_hub_install ( ) {
    dbDelta($os_sql);
    dbDelta($os_group_sql);
    dbDelta($os_group_software_file_sql);
- 
+   
+   $wpdb->query($os_group_data_sql);
+   $wpdb->query($os_data_sql);
+   
    add_option("software_hub_db_version", $software_hub_db_version);
 }
 
