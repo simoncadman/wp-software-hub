@@ -157,6 +157,9 @@
                             <th>
                                 Note
                             </th>
+                            <th>
+                                Display
+                            </th>
                         </tr>
                         <?php foreach ( $changes as $change ) : ?>
                         <tr valign="top">
@@ -164,14 +167,20 @@
                                     <?php echo $change->time; ?>
                             </td>
                             <td>
-                                    <?php echo $change->commit; ?>
+                                    <a title="<?php echo $change->note ?>" href="<?php echo $githubweb ?>/commit/<?php echo $change->commit; ?>"><?php echo substr($change->commit,0,10); ?></a>
+                            </td>
+                            <td style="width:60%;">
+                                    <input type="text" name="software_hub_change_display_message[<?php echo $change->id; ?>]"  style="width:100%;" value="<?php echo $change->display_message; ?>" />
                             </td>
                             <td>
-                                    <?php echo $change->display_message; ?>
+                                    <input type="checkbox" name="software_hub_change_live[<?php echo $change->id; ?>]" <?php if ( $change->live) : ?>checked<?php endif; ?> />
                             </td>
                         </tr>
                         <?php endforeach; ?>
                     </table>
+		<p class="submit">
+			<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+		</p>
                     <?php endif; ?>
                     
                     <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changelog' ) : ?>

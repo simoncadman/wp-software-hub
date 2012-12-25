@@ -142,13 +142,31 @@ function software_hub_options () {
             $newfields['github_user'] = $_POST['software_hub_github_user'];
             $newfields['github_repository'] = $_POST['software_hub_github_repository'];
             $newfields['download_url_prefix'] = $_POST['software_hub_download_url_prefix'];
-        } else if ( $_POST['software_hub_backend_page_type'] == 'changelog' ) {
-            if ( isset( $_POST['software_hub_changelog_enabled'] ) ) {
-                $newfields['changelog_enabled'] = $_POST['software_hub_changelog_enabled'] === 'on';
+        }else if ( $_POST['software_hub_backend_page_type'] == 'overview' ) {
+            if ( isset( $_POST['software_hub_overview_enabled'] ) ) {
+                $newfields['overview_enabled'] = $_POST['software_hub_overview_enabled'] === 'on';
             } else {
-                $newfields['changelog_enabled'] = 0;
+                $newfields['overview_enabled'] = 0;
             }
-            $newfields['changelog'] = stripslashes($_POST['software_hub_changelog_text']);
+            $newfields['overview'] = stripslashes($_POST['software_hub_overview_text']);
+            $newfields['github_user'] = $_POST['software_hub_github_user'];
+            $newfields['github_repository'] = $_POST['software_hub_github_repository'];
+            $newfields['download_url_prefix'] = $_POST['software_hub_download_url_prefix'];
+        } else if ( $_POST['software_hub_backend_page_type'] == 'changes' ) {
+            $doUpdate = false;
+            $changeitems = array();
+            foreach ($_POST['software_hub_change_display_message'] as $id => $message) {
+                $changeitems[$id]['display_message'] = $message;
+                if ( isset($_POST['software_hub_change_live'][$id]  ) ) {
+                    $changeitems[$id]['live'] = $_POST['software_hub_change_live'][$id] == 'on';
+                } else {
+                    $changeitems[$id]['live'] = 0;
+                }
+            }
+            foreach ( $changeitems as $key => $item ) {
+                $wpdb->update( $wpdb->prefix . "software_hub_changelog", $item, array('id' => $key ) );
+            }
+            
         } else if ( $_POST['software_hub_backend_page_type'] == 'installation' ) {
             if ( isset( $_POST['software_hub_installation_enabled'] ) ) {
                 $newfields['installation_enabled'] = $_POST['software_hub_installation_enabled'] === 'on';
@@ -209,6 +227,8 @@ function software_hub_options () {
             $changes = $wpdb->get_results(
                 $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_changelog where software_id = %s order by time desc", $_GET['tab'] )
             );
+            
+            $githubweb = 'https://github.com/'.$software->github_user.'/'.$software->github_repository;
         }
         
         if ( isset( $_GET['tab2'] ) && $_GET['tab2'] == 'install' ) {
