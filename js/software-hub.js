@@ -14,15 +14,17 @@ function softwareHubHideItems ( ) {
 
 function softwareHubUpdateInstallInstructions ( type ) {
 
-	if ( typeof type == "undefined" ) {
-		type=document.getElementById('installdropdown').value;
-	}
+        if ( document.getElementById('installdropdown') != null ) {
+            if ( typeof type == "undefined" ) {
+                    type=document.getElementById('installdropdown').value;
+            }
 
-	softwareHubHideItems();
-	var installdescription = document.getElementById('install' + type );
-	if ( installdescription != null ) {
-		installdescription.style.display = "";
-	}
+            softwareHubHideItems();
+            var installdescription = document.getElementById('install' + type );
+            if ( installdescription != null ) {
+                    installdescription.style.display = "";
+            }
+        }
 }
 
 document.body.onload = function () {
