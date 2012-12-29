@@ -5,3 +5,7 @@
 .software-hub-view .ui-tabs-nav {
     background:none;
 }
+
+.software-hub-view {
+    font-size: 14px;
+}
