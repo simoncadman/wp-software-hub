@@ -305,7 +305,11 @@ where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s
             
             $githubweb = 'https://github.com/'.$software->github_user.'/'.$software->github_repository;
             
+            ob_start();
             require_once(dirname(__FILE__) . '/frontend-view-software-hub.php');
+            $view = ob_get_contents();
+            ob_clean();
+            return $view;
         }
     }
 }
