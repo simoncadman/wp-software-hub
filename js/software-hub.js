@@ -1,6 +1,6 @@
 jQuery('.software-hub-view').tabs()
 var installdropdown = document.getElementById('installdropdown');
-if ( typeof installdropdown != 'undefined'  ) {
+if ( installdropdown != null  ) {
 	installdropdown.style.display = "";
 	softwareHubHideItems();
 }
