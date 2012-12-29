@@ -1,3 +1,4 @@
+jQuery('.software-hub-view').tabs()
 var installdropdown = document.getElementById('installdropdown');
 installdropdown.style.display = "";
 softwareHubHideItems();
@@ -21,4 +22,3 @@ document.body.onload = function () {
 softwareHubUpdateInstallInstructions();
 }
 
-jQuery('.software-hub-view').tabs()
