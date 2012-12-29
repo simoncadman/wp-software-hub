@@ -16,6 +16,7 @@
                                 <?php foreach ( $softwareInstances as $instance ) : ?>
                                 <li>
                                     <form method="post" action="">
+                                    <?php wp_nonce_field('software-hub-update-admin', 'software-hub-nonce'); ?>
                                     <input type="hidden" name="software_hub_backend_page_type" value="delete_software" />
                                     <input type="hidden" name="software_id" value="<?php echo $instance->id; ?>" />
                                     <?php echo $instance->name; ?> <input type="submit" value="Delete" />
@@ -29,6 +30,7 @@
         <?php endif; ?>
         <table class="form-table">
          <form method="post" action="">
+             <?php wp_nonce_field('software-hub-update-admin', 'software-hub-nonce'); ?>
                 <tr valign="top">
                         <th scope="row"><?php _e('Add New Software', 'software_hub');?></th>
                         <td>
@@ -40,6 +42,7 @@
         <?php endif; ?>
                     <?php if ( isset($_GET['tab']) && $_GET['tab'] != 'software-hub-options' ) : ?>
 	<form id="software_hub_form" method="post" action="">
+                    <?php wp_nonce_field('software-hub-update-admin', 'software-hub-nonce'); ?>
                     <input type="hidden" name="software_id" value="<?php echo $software->id; ?>" />
                     <h4>Shortcode: [software_hub_view id="<?php echo $software->id; ?>"]</h4>
                     

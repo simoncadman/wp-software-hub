@@ -45,6 +45,10 @@ function software_hub_options () {
     global $wpdb;
     $errors = array();
     
+    if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+        if (! wp_verify_nonce($_REQUEST['software-hub-nonce'], 'software-hub-update-admin') ) die('Security check failed'); 
+    }
+    
     if ( $_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['software_hub_backend_page_type'] == 'hub' ) {
         if ( isset( $_POST['software_hub_new'] ) && strlen( $_POST['software_hub_new'] ) > 0 ) {
             $wpdb->insert( $wpdb->prefix . "software_hub_software", array( 'name' => $_POST['software_hub_new'] ) );
