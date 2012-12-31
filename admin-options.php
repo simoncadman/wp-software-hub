@@ -250,7 +250,7 @@
                     ?>
                     <table class="form-table">
                             <tr valign="top">
-                                    <th scope="row"><?php _e('Package Filename', 'software_hub');?></th>
+                                    <th scope="row"><?php _e('Package Filename <br/>( %v replaced with latest version name )', 'software_hub');?></th>
                                     <td>
                                             <input style="width:300px;" type="text" name="software_hub_install_filename" value="<?php echo $softwarefilename; ?>" />
                                     </td>
