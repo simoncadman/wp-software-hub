@@ -317,7 +317,11 @@ function software_hub_view ( $params ) {
                                             
             foreach ( $osgroups as $osgroup ) {
                 $osgroup->oses = $wpdb->get_results( 
-                                    $wpdb->prepare("SELECT *, ( select group_concat(' ' , short_name ) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oslist, ( select count(id) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oscount FROM {$wpdb->prefix}software_hub_os_group 
+                                    $wpdb->prepare("SELECT *, ( select group_concat(' ' , short_name,
+
+if ( isnull( ( select min_version from wp_software_hub_software_os where software_id = '1' and os_id = wp_software_hub_os.id ) ) , '', concat( ' ',  ( select min_version from wp_software_hub_software_os where software_id = wp_software_hub_install.software_id and os_id = wp_software_hub_os.id ), '+ ' ) )
+
+) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oslist, ( select count(id) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oscount FROM {$wpdb->prefix}software_hub_os_group 
                                     inner join {$wpdb->prefix}software_hub_install on {$wpdb->prefix}software_hub_os_group.id =  {$wpdb->prefix}software_hub_install.os_group_id 
 where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s 
     and {$wpdb->prefix}software_hub_install.software_id = %s and live = 1 order by display_order asc ", $osgroup->os_group_id, $osgroup->os_group_id, $params['id'] )
@@ -351,6 +355,7 @@ function software_hub_install ( ) {
 
    $software_table_name = $wpdb->prefix . "software_hub_software";
    $software_release_table_name = $wpdb->prefix . "software_hub_software_release";
+   $software_os_table_name = $wpdb->prefix . "software_hub_software_os";
    $changelog_table_name = $wpdb->prefix . "software_hub_changelog";
    $install_table_name = $wpdb->prefix . "software_hub_install";
    $os_table_name = $wpdb->prefix . "software_hub_os";
@@ -383,6 +388,15 @@ function software_hub_install ( ) {
   software_id mediumint(9) NOT NULL,
   time datetime NOT NULL,
   live tinyint (1) NOT NULL,
+  UNIQUE KEY id (id)
+    );";
+   
+   $software_os_group_sql = "CREATE TABLE $software_os_table_name (
+  id mediumint(9) NOT NULL AUTO_INCREMENT,
+  software_id mediumint(9) NOT NULL,
+  os_id mediumint(9) NOT NULL,
+  min_version varchar(255) NULL,
+  max_version varchar(255) NULL,
   UNIQUE KEY id (id)
     );";
    
@@ -471,6 +485,7 @@ $os_group_data_sql = "REPLACE INTO $os_group_table_name (`id`, `name`, `short_na
    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
    dbDelta($software_sql);
    dbDelta($software_release_sql);
+   dbDelta($software_os_group_sql);
    dbDelta($changelog_sql);
    dbDelta($install_sql);
    dbDelta($os_sql);
