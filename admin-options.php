@@ -250,6 +250,12 @@
                     ?>
                     <table class="form-table">
                             <tr valign="top">
+                                    <th scope="row"><?php _e('Package Filename', 'software_hub');?></th>
+                                    <td>
+                                            <input style="width:300px;" type="text" name="software_hub_install_filename" value="<?php echo $softwarefilename; ?>" />
+                                    </td>
+                            </tr>
+                            <tr valign="top">
                                     <th scope="row"><?php _e('Show Install Instructions', 'software_hub');?></th>
                                     <td>
                                             <input type="checkbox" name="software_hub_install_live" <?php if ( isset( $install->live ) && $install->live ) : ?>checked<?php endif; ?> />

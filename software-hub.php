@@ -181,6 +181,21 @@ function software_hub_options () {
             if ( isset($_POST['software_hub_install_live']) && $_POST['software_hub_install_live'] == 'on' ) {
                 $live = 1;
             }
+            
+            $foundosgroupfile = $wpdb->get_row(
+                $wpdb->prepare("SELECT count(id) as count FROM {$wpdb->prefix}software_hub_os_group_software_file where software_id = %s and os_group_id = %s limit 1", $_POST['software_id'], $_POST['os_group_id'] )
+            );
+            $osgroupfiledata = array( 
+                                    'os_group_id' => $_POST['os_group_id'],
+                                    'software_id' => $_POST['software_id'],
+                                    'file' => $_POST['software_hub_install_filename'] 
+                               );
+            if ( $foundosgroupfile->count > 0 ) {
+                $wpdb->update( $wpdb->prefix . "software_hub_os_group_software_file", $osgroupfiledata, array('software_id' => $_POST['software_id'], 'os_group_id' => $_POST['os_group_id']) );
+            } else {
+                $wpdb->insert( $wpdb->prefix . "software_hub_os_group_software_file", $osgroupfiledata );
+            }
+            
             $data = array( 'os_group_id' => $_POST['os_group_id'],
                            'software_id' => $_POST['software_id'],
                            'content' => stripslashes($_POST['software_hub_install']),
@@ -210,7 +225,9 @@ function software_hub_options () {
         }
         
         if ( $doUpdate ) {
-            $wpdb->update( $wpdb->prefix . "software_hub_software", $newfields, array( 'id' => $_POST['software_id'] ) );
+            if ( count($newfields) > 0 ) {
+                $wpdb->update( $wpdb->prefix . "software_hub_software", $newfields, array( 'id' => $_POST['software_id'] ) );
+            }
         }
     }
     if ( isset($_GET['tab']) ) {
@@ -236,9 +253,8 @@ function software_hub_options () {
             $osgroups = $wpdb->get_results(
                 "SELECT * FROM {$wpdb->prefix}software_hub_os_group order by display_order asc "
             );
-            
             $osgroupid = $osgroups[0]->id;
-            
+                
             if ( isset($_GET['tab3']) ) {
                 $osgroupid = $_GET['tab3'];
             }
@@ -251,6 +267,16 @@ function software_hub_options () {
                 if ( isset($install->content) ) {
                     $installtext = $install->content;
                 }
+            }
+            
+            
+            $softwarefile = $wpdb->get_row(
+                $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_os_group_software_file where software_id = %s and os_group_id = %s ", $_GET['tab'], $osgroupid )
+            );
+            
+            $softwarefilename = '';
+            if ( !is_null($softwarefile) ) {
+                $softwarefilename = $softwarefile->file;
             }
         }
     }
