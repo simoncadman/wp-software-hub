@@ -231,6 +231,15 @@
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=install&tab3=<?php echo $osgroup->id; ?>" class="nav-tab <?php if ( ( $first && !isset($_GET['tab3']) ) || ( $first && $_GET['tab3']  == '' ) || isset($_GET['tab3']) && $_GET['tab3'] == $osgroup->id ): ?> nav-tab-active <?php endif; ?>"><?php _e($osgroup->short_name, 'software_hub_control');?></a>
                         <?php $first = false; endforeach; ?>
                     </h3>
+                    <?php if ( count($operatingsystems) > 0 ): ?>
+                    <h3>Operating Systems:</h3>
+                    <table>
+                    <tr><th>OS</th><th>Minimum Version</th></tr>
+                    <?php foreach ( $operatingsystems as $operatingsystem ) : ?>
+                    <tr><td><?php echo $operatingsystem->name; ?></td><td><input name="software_hub_os_software_minversion[<?php echo $operatingsystem->id; ?>]" type="text" value="<?php echo $operatingsystem->min_version; ?>" /></td></tr>
+                    <?php endforeach; ?>
+                    </table>
+                    <?php endif; ?>
                     <h3>Shortcodes:</h3>
                     <?php $downloadshortcode = '[software_hub_download id="'.$software->id.'" os_group_id="'.$osgroupid.'"]'; 
                     $downloadshortcodedata = do_shortcode( $downloadshortcode );

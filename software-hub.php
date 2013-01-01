@@ -208,6 +208,20 @@ function software_hub_options () {
             } else {
                 $wpdb->insert( $wpdb->prefix . "software_hub_install", $data );
             }
+            
+            
+            foreach ( $_POST['software_hub_os_software_minversion'] as $key => $item ) {
+                $operatingsystemItem = $wpdb->get_row( 
+                                            $wpdb->prepare(" select count(id) as count from {$wpdb->prefix}software_hub_software_os where software_id = %s and os_id = %s ", $_POST['software_id'], $key )
+                                       );
+                $data = array( 'software_id' => $_POST['software_id'] , 'os_id' => $key, 'min_version' => $item );
+                if ( $operatingsystemItem->count > 0 ) {
+                    $wpdb->update( $wpdb->prefix . "software_hub_software_os", $data, array('software_id' => $_POST['software_id'], 'os_id' => $key) );
+                } else {
+                    $wpdb->insert( $wpdb->prefix . "software_hub_software_os", $data );
+                }
+            }
+            
         } else if ( $_POST['software_hub_backend_page_type'] == 'configuration' ) {
             if ( isset( $_POST['software_hub_configuration_enabled'] ) ) {
                 $newfields['configuration_enabled'] = $_POST['software_hub_configuration_enabled'] === 'on';
@@ -278,6 +292,10 @@ function software_hub_options () {
             if ( !is_null($softwarefile) ) {
                 $softwarefilename = $softwarefile->file;
             }
+            
+            $operatingsystems = $wpdb->get_results( 
+                                    $wpdb->prepare(" select {$wpdb->prefix}software_hub_os.id, name, min_version from {$wpdb->prefix}software_hub_os left join {$wpdb->prefix}software_hub_software_os on {$wpdb->prefix}software_hub_software_os.os_id = {$wpdb->prefix}software_hub_os.id where os_group_id = %s and ( software_id = %s or isnull(software_id) ) ", $osgroupid, $_GET['tab'] )
+                                );
         }
     }
     
@@ -319,7 +337,7 @@ function software_hub_view ( $params ) {
                 $osgroup->oses = $wpdb->get_results( 
                                     $wpdb->prepare("SELECT *, ( select group_concat(' ' , short_name,
 
-if ( isnull( ( select min_version from wp_software_hub_software_os where software_id = '1' and os_id = wp_software_hub_os.id ) ) , '', concat( ' ',  ( select min_version from wp_software_hub_software_os where software_id = wp_software_hub_install.software_id and os_id = wp_software_hub_os.id ), '+ ' ) )
+if ( isnull( ( select min_version from {$wpdb->prefix}software_hub_software_os where software_id = '1' and os_id = {$wpdb->prefix}software_hub_os.id ) ) , '', concat( ' ',  ( select min_version from {$wpdb->prefix}software_hub_software_os where software_id = {$wpdb->prefix}software_hub_install.software_id and os_id = {$wpdb->prefix}software_hub_os.id ), '+ ' ) )
 
 ) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oslist, ( select count(id) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oscount FROM {$wpdb->prefix}software_hub_os_group 
                                     inner join {$wpdb->prefix}software_hub_install on {$wpdb->prefix}software_hub_os_group.id =  {$wpdb->prefix}software_hub_install.os_group_id 
