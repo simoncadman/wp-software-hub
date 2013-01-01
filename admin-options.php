@@ -138,8 +138,8 @@
                                 </ul>
                             </td>
                             <td>
-                                    Delete
-                                    Modify
+                                    <input type="button" class="button-primary" onclick="deleteRelease(<?php echo $release->id; ?>);" value="Delete" />
+                                    <input type="button" class="button-primary" onclick="modifyRelease(<?php echo $release->id; ?>);" value="Modify" />
                             </td>
                         </tr>
                         <?php endforeach; ?>
