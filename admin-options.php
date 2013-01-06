@@ -48,7 +48,7 @@
                     
                     <h3 class="nav-tab-wrapper">
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=overview" class="nav-tab <?php if ( !isset($_GET['tab2']) || $_GET['tab2'] == '' || $_GET['tab2'] == 'overview' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Overview', 'software_hub_control');?></a>
-                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=releases" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'releases' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Releases', 'software_hub_control');?></a>
+                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=releases" class="nav-tab <?php if ( isset($_GET['tab2']) && ( $_GET['tab2'] == 'releases' || $_GET['tab2'] == 'create-new-release' ) ): ?> nav-tab-active <?php endif; ?>"><?php _e('Releases', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=changelog" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changelog' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changelog', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=changes" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changes' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changes', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=installation" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'installation' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Installation', 'software_hub_control');?></a>
@@ -93,9 +93,39 @@
                     </table>
                     <?php endif; ?>
                     
+                    <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'create-new-release' ) : ?>
+                    <input type="hidden" id="software_hub_backend_page_type" name="software_hub_backend_page_type" value="create-new-release" />
+                    <table class="form-table">
+                            <tr valign="top">
+                                    <th scope="row"><?php _e('Name', 'software_hub');?></th>
+                                    <td>
+                                            <input type="text" name="software_hub_release_name" value="" />
+                                    </td>
+                            </tr>
+                            <tr valign="top">
+                                    <th scope="row"><?php _e('Release Time', 'software_hub');?></th>
+                                    <td>
+                                            <input type="text" name="software_hub_release_time" value="<?php echo gmdate('Y-m-d H:i:s') ?>" />
+                                    </td>
+                            </tr>
+                            <tr valign="top">
+                                    <th scope="row"><?php _e('Notes', 'software_hub');?></th>
+                                    <td>
+                                            <?php wp_editor('', 'software_hub_release_notes'); ?>
+                                    </td>
+                            </tr>
+                            <tr valign="top">
+                                    <th scope="row"><?php _e('Display', 'software_hub');?></th>
+                                    <td>
+                                            <input type="checkbox" name="software_hub_release_live" />
+                                    </td>
+                            </tr>
+                    </table>
+                    <?php endif; ?>
+                    
                     <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'releases' ) : ?>
                     <input type="hidden" id="software_hub_backend_page_type" name="software_hub_backend_page_type" value="releases" />
-                    <input type="button" class="button-primary" onclick="document.getElementById('addSoftwareRelease').style.display='';" value="Create New Release" />
+                    <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=create-new-release"><input type="button" class="button-primary" value="Create New Release" /></a>
                     <input type="button" class="button-primary" onclick="document.getElementById('software_hub_backend_page_type').value = 'populate-changes'; document.getElementById('software_hub_form').submit();" value="Populate Changes" />
                     <table class="form-table">
                         <tr valign="top">

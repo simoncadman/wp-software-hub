@@ -175,6 +175,17 @@ function software_hub_options () {
                 $newfields['installation_enabled'] = 0;
             }
             $newfields['installation'] = stripslashes($_POST['software_hub_installation_text']);
+        } else if ( $_POST['software_hub_backend_page_type'] == 'create-new-release' ) {
+            $data = array( 'name' => $_POST['software_hub_release_name'],
+                           'software_id' => $_POST['software_id'],
+                           'time' => $_POST['software_hub_release_time'],
+                           'notes' => $_POST['software_hub_release_notes'],
+                           'live' => $_POST['software_hub_release_live'] == 'on' );
+            $wpdb->insert( $wpdb->prefix . "software_hub_software_release", $data );
+            
+            // make sure show releases page
+            $_GET['tab'] = $_POST['software_id'];
+            $_GET['tab2'] = 'releases';
         } else if ( $_POST['software_hub_backend_page_type'] == 'install' ) {
             $doUpdate = false;
             $live = 0;
