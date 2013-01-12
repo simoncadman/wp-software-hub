@@ -348,7 +348,11 @@ function software_hub_view ( $params ) {
                 $osgroup->oses = $wpdb->get_results( 
                                     $wpdb->prepare("SELECT *, ( select group_concat(' ' , short_name,
 
-if ( isnull( ( select min_version from {$wpdb->prefix}software_hub_software_os where software_id = '1' and os_id = {$wpdb->prefix}software_hub_os.id ) ) , '', concat( ' ',  ( select min_version from {$wpdb->prefix}software_hub_software_os where software_id = {$wpdb->prefix}software_hub_install.software_id and os_id = {$wpdb->prefix}software_hub_os.id ), '+ ' ) )
+if ( isnull( ( select min_version from {$wpdb->prefix}software_hub_software_os where software_id = '1' and os_id = {$wpdb->prefix}software_hub_os.id ) )  or ( SELECT min_version
+FROM wp_software_hub_software_os
+WHERE software_id = '1'
+AND os_id = wp_software_hub_os.id
+) = ''  , '', concat( ' ',  ( select min_version from {$wpdb->prefix}software_hub_software_os where software_id = {$wpdb->prefix}software_hub_install.software_id and os_id = {$wpdb->prefix}software_hub_os.id ), '+ ' ) )
 
 ) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oslist, ( select count(id) from {$wpdb->prefix}software_hub_os where os_group_id = {$wpdb->prefix}software_hub_os_group.id order by display_order asc ) as oscount FROM {$wpdb->prefix}software_hub_os_group 
                                     inner join {$wpdb->prefix}software_hub_install on {$wpdb->prefix}software_hub_os_group.id =  {$wpdb->prefix}software_hub_install.os_group_id 
