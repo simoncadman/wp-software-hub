@@ -483,7 +483,9 @@ $os_data_sql = "REPLACE INTO $os_table_name (`id`, `name`, `short_name`, `os_gro
 (18, 'Chakra', 'Chakra', 4),
 (21, 'Other (Source install)', 'Other (Source install)', 10),
 (22, 'Mac OS X', 'Mac OS X', 8),
-(23, 'Windows', 'Windows', 9);";
+(23, 'Windows', 'Windows', 9),
+(24, 'FreeBSD', 'FreeBSD', 11),
+(25, 'PC-BSD', 'PC-BSD', 12);";
    
    $os_group_sql = "CREATE TABLE $os_group_table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -503,8 +505,10 @@ $os_group_data_sql = "REPLACE INTO $os_group_table_name (`id`, `name`, `short_na
 (6, 'Zypper Based', 'Zypper', 1, 4),
 (7, 'PPA Based Installation', 'PPA', 2, 1),
 (8, 'Darwin Based', 'Mac', 0, 8),
-(9, 'Windows Based', 'Windows', 0, 9),
-(10, 'Source Install', 'Source', 0, 10);
+(9, 'Windows Based', 'Windows', 0, 90),
+(10, 'Source Install', 'Source', 0, 99),
+(11, 'FreeBSD', 'FreeBSD', 0, 9),
+(12, 'PC-BSD', 'PC-BSD', 11, 10);
    ";
    
    $os_group_software_file_sql = "CREATE TABLE $os_group_software_file_table_name (
