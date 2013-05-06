@@ -55,6 +55,7 @@
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=install" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'install' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Install Instructions', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=configuration" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'configuration' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Configuration', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=issues" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'issues' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Issues', 'software_hub_control');?></a>
+                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=faqs" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'faqs' ): ?> nav-tab-active <?php endif; ?>"><?php _e('FAQs', 'software_hub_control');?></a>
                     </h3>
                     
                     <?php if ( !isset($_GET['tab2']) || $_GET['tab2'] == '' || $_GET['tab2'] == 'overview' ) : ?>
@@ -340,6 +341,24 @@
                                     <th scope="row"><?php _e('Issues', 'software_hub');?></th>
                                     <td>
                                             <?php wp_editor($software->issues, 'software_hub_issues_text'); ?>
+                                    </td>
+                            </tr>
+                    </table>
+                    <?php endif; ?>
+                    
+                    <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'faqs' ) : ?>
+                    <input type="hidden" name="software_hub_backend_page_type" value="faqs" />
+                    <table class="form-table">
+                            <tr valign="top">
+                                    <th scope="row"><?php _e('Show FAQs', 'software_hub');?></th>
+                                    <td>
+                                            <input type="checkbox" name="software_hub_faqs_enabled" <?php if ( $software->faqs_enabled ) : ?>checked<?php endif; ?> />
+                                    </td>
+                            </tr>
+                            <tr valign="top">
+                                    <th scope="row"><?php _e('FAQs', 'software_hub');?></th>
+                                    <td>
+                                            <?php wp_editor($software->faqs, 'software_hub_faqs_text'); ?>
                                     </td>
                             </tr>
                     </table>

@@ -248,6 +248,13 @@ function software_hub_options () {
                 $newfields['issues_enabled'] = 0;
             }
             $newfields['issues'] = stripslashes($_POST['software_hub_issues_text']);
+        } else if ( $_POST['software_hub_backend_page_type'] == 'faqs' ) {
+            if ( isset( $_POST['software_hub_faqs_enabled'] ) ) {
+                $newfields['faqs_enabled'] = $_POST['software_hub_faqs_enabled'] === 'on';
+            } else {
+                $newfields['faqs_enabled'] = 0;
+            }
+            $newfields['faqs'] = stripslashes($_POST['software_hub_faqs_text']);
         }
         
         if ( $doUpdate ) {
@@ -412,6 +419,8 @@ function software_hub_install ( ) {
   configuration longtext NOT NULL,
   issues_enabled tinyint(1) NOT NULL,
   issues longtext NOT NULL,
+  faqs_enabled tinyint(1) NOT NULL,
+  faqs longtext NOT NULL,
   UNIQUE KEY id (id)
     );";
    

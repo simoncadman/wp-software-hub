@@ -19,6 +19,10 @@
         <?php if ( $software->issues_enabled ): ?>
         <li><a href="#software-hub-view-<?php echo $software->id; ?>-issues">Issues</a></li>
         <?php endif; ?>
+        
+        <?php if ( $software->faqs_enabled ): ?>
+        <li><a href="#software-hub-view-<?php echo $software->id; ?>-faqs">FAQs</a></li>
+        <?php endif; ?>
     </ul>
     
     <?php if ( $software->overview_enabled ): ?>
@@ -103,6 +107,14 @@
     <div id="software-hub-view-<?php echo $software->id; ?>-issues">
         <?php
         echo $software->issues;
+        ?>
+    </div>
+    <?php endif; ?>
+    
+    <?php if ( $software->faqs_enabled ): ?>
+    <div id="software-hub-view-<?php echo $software->id; ?>-faqs">
+        <?php
+        echo $software->faqs;
         ?>
     </div>
     <?php endif; ?>
