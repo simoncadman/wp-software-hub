@@ -41,3 +41,7 @@
     font-family: Georgia,"Bitstream Charter",serif !important;
     border: 0px !important;
 }
+
+#installdropdown {
+    width:100%;
+}
