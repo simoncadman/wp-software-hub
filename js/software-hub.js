@@ -27,8 +27,8 @@ function softwareHubUpdateInstallInstructions ( type ) {
         }
 }
 
-document.body.onload = function () {
+$(document).ready(function() {
         $('.software-hub-view').tabs();
 	softwareHubUpdateInstallInstructions();
-}
+});
 

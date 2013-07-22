@@ -338,8 +338,12 @@ function software_hub_view ( $params ) {
         );
         
         if ( !is_null($software) ) {
-            wp_enqueue_script('software_hub', '/wp-content/plugins/software-hub/js/software-hub.js');
-            wp_enqueue_style('software_hub', '/wp-content/plugins/software-hub/css/software-hub.css');
+            $plugins_url = plugins_url( 'software-hub' );
+            wp_enqueue_style( 'jquery-ui-css', $plugins_url . '/jquery/themes/base/jquery-ui.css' );
+            wp_enqueue_script( 'jquery-js', $plugins_url . '/jquery/jquery-1.9.1.js');
+            wp_enqueue_script( 'jquery-ui-js', $plugins_url . '/jquery/ui/jquery-ui.js');
+            wp_enqueue_script('software_hub', $plugins_url . '/js/software-hub.js');
+            wp_enqueue_style('software_hub', $plugins_url . '/css/software-hub.css');
             global $wpdb;
             $osgroups = $wpdb->get_results($wpdb->prepare("SELECT *, 
                                             ( select count(id) from {$wpdb->prefix}software_hub_os_group as childgroup 
