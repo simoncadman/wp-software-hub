@@ -1,4 +1,4 @@
-jQuery('.software-hub-view').tabs()
+
 var installdropdown = document.getElementById('installdropdown');
 if ( installdropdown != null  ) {
 	installdropdown.style.display = "";
@@ -28,6 +28,7 @@ function softwareHubUpdateInstallInstructions ( type ) {
 }
 
 document.body.onload = function () {
+        $('.software-hub-view').tabs();
 	softwareHubUpdateInstallInstructions();
 }
 

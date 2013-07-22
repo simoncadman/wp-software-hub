@@ -1,3 +1,9 @@
+<?php 
+$plugins_url = plugins_url( 'software-hub' );
+wp_enqueue_style( 'jquery-ui-css', $plugins_url.'/jquery/themes/base/jquery-ui.css' );
+wp_enqueue_script( 'jquery-js', $plugins_url.'/jquery/jquery-1.9.1.js');
+wp_enqueue_script( 'jquery-ui-js', $plugins_url.'/jquery/ui/jquery-ui.js');
+?>
 <div id="software-hub-view-<?php echo $software->id; ?>" class="software-hub-view">
     <ul>
         <?php if ( $software->overview_enabled ): ?>
@@ -39,7 +45,7 @@
         echo $software->changelog;
         ?>
         <?php foreach ( $releases as $release ) : ?>
-        <h4><?php echo $release->name; ?> Release &ndash; <?php echo date('jS F Y', strtotime($release->time)); ?></h4>
+        <h4><strong><?php echo $release->name; ?> Release &ndash; <?php echo date('jS F Y', strtotime($release->time)); ?></strong></h4>
         <?php if ( strlen( $release->notes ) > 0 ): ?>
         <?php echo $release->notes; ?>
         <?php endif; ?>

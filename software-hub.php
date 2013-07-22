@@ -1,14 +1,14 @@
 <?php
 /**
  * @package Software-Hub
- * @version 0.1
+ * @version 0.2
  */
 /*
 Plugin Name: Software Hub
 Plugin URI: http://sh.niftiestsoftware.com
 Description: Manages software projects
 Author: Simon Cadman
-Version: 0.1
+Version: 0.2
 Author URI: http://www.niftiestsoftware.com/
 */
 /*  Copyright 2012 Simon Cadman (src@niftiestsoftware.com)
@@ -392,7 +392,7 @@ where parent_id = %s or {$wpdb->prefix}software_hub_os_group.id = %s
 
 function software_hub_install ( ) {
    global $wpdb;
-   $software_hub_db_version = "0.1";
+   $software_hub_db_version = "0.2";
 
    $software_table_name = $wpdb->prefix . "software_hub_software";
    $software_release_table_name = $wpdb->prefix . "software_hub_software_release";
