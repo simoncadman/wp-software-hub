@@ -90,7 +90,6 @@ function software_hub_options () {
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/Message/Response.php');
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/HttpClientInterface.php');
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/HttpClient/HttpClient.php');
-        require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Exception/ExceptionInterface.php');
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Exception/RuntimeException.php');
         require_once(dirname(__FILE__) . '/lib/php-github-api/lib/Github/Exception/ApiLimitExceedException.php');
         $githubclient = new Github\Client();
