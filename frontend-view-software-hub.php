@@ -45,7 +45,7 @@
         <?php endif; ?>
         <ul>
             <?php foreach ( $release->changes as $change ): ?>
-            <li><?php echo $change->display_message ?> <a title="<?php echo $change->note ?>" href="<?php echo $githubweb ?>/commit/<?php echo $change->commit; ?>"><img style="width:15px;" src="<?php echo WP_PLUGIN_URL . '/software-hub/images/git.svg' ?>" /></a></li>
+            <li><?php echo $change->display_message ?> <a title="<?php echo $change->note ?>" href="<?php echo $githubweb ?>/commit/<?php echo $change->commit; ?>"><img style="width:15px;" src="<?php echo WP_PLUGIN_URL . '/software-hub/images/git.svg' ?>" alt="Git logo" /></a></li>
             <?php endforeach; ?>
         </ul>
         <?php endforeach; ?>
