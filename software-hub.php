@@ -329,6 +329,19 @@ function software_hub_changes ( $releaseid ) {
     );
 }
 
+
+function software_hub_add_scripts() {
+
+$plugins_url = plugins_url( 'software-hub' );
+            wp_enqueue_style( 'jquery-ui-css', $plugins_url . '/jquery/themes/base/jquery-ui.css' );
+            wp_enqueue_script( 'jquery-js', $plugins_url . '/jquery/jquery-1.9.1.js');
+            wp_enqueue_script( 'jquery-ui-js', $plugins_url . '/jquery/ui/jquery-ui.js');
+            wp_enqueue_script('software_hub', $plugins_url . '/js/software-hub.js');
+            wp_enqueue_style('software_hub', $plugins_url . '/css/software-hub.css');
+
+}
+
+
 function software_hub_view ( $params ) {
     if ( isset($params) && is_array($params) && isset( $params['id'] ) ) {
         global $wpdb;
@@ -337,12 +350,6 @@ function software_hub_view ( $params ) {
         );
         
         if ( !is_null($software) ) {
-            $plugins_url = plugins_url( 'software-hub' );
-            wp_enqueue_style( 'jquery-ui-css', $plugins_url . '/jquery/themes/base/jquery-ui.css' );
-            wp_enqueue_script( 'jquery-js', $plugins_url . '/jquery/jquery-1.9.1.js');
-            wp_enqueue_script( 'jquery-ui-js', $plugins_url . '/jquery/ui/jquery-ui.js');
-            wp_enqueue_script('software_hub', $plugins_url . '/js/software-hub.js');
-            wp_enqueue_style('software_hub', $plugins_url . '/css/software-hub.css');
             global $wpdb;
             $osgroups = $wpdb->get_results($wpdb->prepare("SELECT *, 
                                             ( select count(id) from {$wpdb->prefix}software_hub_os_group as childgroup 
@@ -585,3 +592,4 @@ add_action('admin_menu', 'software_hub_add_pages');
 add_shortcode('software_hub_view', 'software_hub_view');
 add_shortcode('software_hub_download', 'software_hub_download');
 add_shortcode('software_hub_download_prefix', 'software_hub_download_prefix');
+add_action( 'wp_enqueue_scripts', 'software_hub_add_scripts' );
