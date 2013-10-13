@@ -333,9 +333,9 @@ function software_hub_changes ( $releaseid ) {
 function software_hub_add_scripts() {
 
 $plugins_url = plugins_url( 'software-hub' );
-            wp_enqueue_style( 'jquery-ui-css', $plugins_url . '/jquery/themes/base/jquery-ui.css' );
-            wp_enqueue_script( 'jquery-js', $plugins_url . '/jquery/jquery-1.9.1.js');
-            wp_enqueue_script( 'jquery-ui-js', $plugins_url . '/jquery/ui/jquery-ui.js');
+            wp_enqueue_style( 'jquery-ui-css', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css' );
+            wp_enqueue_script( 'jquery-js', '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js');
+            wp_enqueue_script( 'jquery-ui-js', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js');
             wp_enqueue_script('software_hub', $plugins_url . '/js/software-hub.js');
             wp_enqueue_style('software_hub', $plugins_url . '/css/software-hub.css');
 
