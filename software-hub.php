@@ -344,6 +344,7 @@ $plugins_url = plugins_url( 'software-hub' );
 
 function software_hub_view ( $params ) {
     if ( isset($params) && is_array($params) && isset( $params['id'] ) ) {
+    software_hub_add_scripts();
         global $wpdb;
         $software = $wpdb->get_row(
             $wpdb->prepare("SELECT * FROM {$wpdb->prefix}software_hub_software where id = %s limit 1", $params['id'] )
@@ -592,4 +593,3 @@ add_action('admin_menu', 'software_hub_add_pages');
 add_shortcode('software_hub_view', 'software_hub_view');
 add_shortcode('software_hub_download', 'software_hub_download');
 add_shortcode('software_hub_download_prefix', 'software_hub_download_prefix');
-add_action( 'wp_enqueue_scripts', 'software_hub_add_scripts' );
