@@ -51,7 +51,7 @@
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=releases" class="nav-tab <?php if ( isset($_GET['tab2']) && ( $_GET['tab2'] == 'releases' || $_GET['tab2'] == 'create-new-release' ) ): ?> nav-tab-active <?php endif; ?>"><?php _e('Releases', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=changelog" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changelog' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changelog', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=changes" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'changes' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Changes', 'software_hub_control');?></a>
-                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=installation" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'installation' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Installation', 'software_hub_control');?></a>
+                        <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=installation" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'installation' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Install', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=install" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'install' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Install Instructions', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=configuration" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'configuration' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Configuration', 'software_hub_control');?></a>
                         <a href="?page=software_hub_menu&tab=<?= $software->id ?>&tab2=issues" class="nav-tab <?php if ( isset($_GET['tab2']) && $_GET['tab2'] == 'issues' ): ?> nav-tab-active <?php endif; ?>"><?php _e('Issues', 'software_hub_control');?></a>
@@ -239,13 +239,13 @@
                     <input type="hidden" name="software_hub_backend_page_type" value="installation" />
                     <table class="form-table">
                             <tr valign="top">
-                                    <th scope="row"><?php _e('Show Installation', 'software_hub');?></th>
+                                    <th scope="row"><?php _e('Show Install', 'software_hub');?></th>
                                     <td>
                                             <input type="checkbox" name="software_hub_installation_enabled" <?php if ( $software->installation_enabled ) : ?>checked<?php endif; ?> />
                                     </td>
                             </tr>
                             <tr valign="top">
-                                    <th scope="row"><?php _e('Installation', 'software_hub');?></th>
+                                    <th scope="row"><?php _e('Install', 'software_hub');?></th>
                                     <td>
                                             <?php wp_editor($software->installation, 'software_hub_installation_text'); ?>
                                     </td>

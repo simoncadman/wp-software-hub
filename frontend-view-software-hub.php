@@ -5,11 +5,11 @@
         <?php endif; ?>
         
         <?php if ( $software->changelog_enabled ): ?>
-        <li><a href="#software-hub-view-<?php echo $software->id; ?>-changelog">Changelog</a></li>
+        <li><a href="#software-hub-view-<?php echo $software->id; ?>-changelog">Changes</a></li>
         <?php endif; ?>
         
         <?php if ( $software->installation_enabled ): ?>
-        <li><a href="#software-hub-view-<?php echo $software->id; ?>-installation">Installation</a></li>
+        <li><a href="#software-hub-view-<?php echo $software->id; ?>-installation">Install</a></li>
         <?php endif; ?>
         
         <?php if ( $software->configuration_enabled ): ?>
